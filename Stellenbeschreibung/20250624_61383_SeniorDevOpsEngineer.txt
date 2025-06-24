@@ -1,0 +1,17 @@
+Adressat: BWI GmbH Auf dem Steinbüchel 22 53340 Meckenheim Deutschland
+Stelle: Senior DevOps Engineer (m/w/d)
+Stellen-ID: 61383
+
+Ihre Aufgaben:
+Selbstständiges Designen und Entwickeln von Automatisierungslösungen für cloudbasierte Data Science Plattformen, einschließlich der Erstellung von Implementierungsvorgaben und Skripten
+Analyse komplexer Fehlerbilder in Infrastruktur und Applikationsbereitstellung, Bewertung und Behebung durch Automatisierung, sowie fachliche Lösungsfindung mit internen DevOps Teams und Herstellern
+Fachliche Leitung und Umsetzung technischer Anforderungen im Bereich Plattform-Automatisierung und Infrastructure-as-Code, einschließlich der automatisierten Bereitstellung containerisierter Anwendungen via CI/CD
+Systematische Sicherheitshärtung durch Realisierung von IT-Sicherheitsanforderungen.
+
+Ihr Profil:
+Abgeschlossenes Studium im IT-Umfeld oder vergleichbare Ausbildung mit Schwerpunkt DevOps, Cloud-Engineering oder Plattformadministration
+Mindestens 5 Jahre Berufserfahrung in DevOps, cloud-nativen Plattformen, Microservices-Deployment und Automatisierung containerisierter Anwendungen
+Breites Wissen moderner Infrastrukturkonzepte (Cloud, Containerisierung, Orchestrierung) und Erfahrungen mit Automatisierungswerkzeugen wie GitLab-CI, Terraform, ArgoCD sowie Kenntnisse in Programmiersprachen (z.B. Python, Bash)
+Erfahrung im Umgang mit Technologien wie Crossplane, Ansible, CloudFormation und wünschenswerte Kenntnisse im Bereich MLOps
+Hohe Leistungsmotivation, selbstbewusstes Auftreten, ausgeprägte Team- und Kommunikationsfähigkeiten, Verantwortungsbewusstsein, Sorgfalt sowie Frustrationstoleranz
+Verhandlungssichere Deutschkenntnisse in Wort und Schrift und sehr gute Englischkenntnisse
