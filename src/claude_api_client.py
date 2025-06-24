@@ -9,6 +9,9 @@ from pathlib import Path
 from typing import Dict, Any, Optional
 from dotenv import load_dotenv
 
+# Base AI Client
+from base_ai_client import BaseAIClient, AIProviderError, AIContentError
+
 # AI Content Generator imports
 from ai_content_generator import (
     AIContentRequest, AIContentResponse, ContentType, 
@@ -25,10 +28,11 @@ except ImportError:
     anthropic = None
 
 
-class ClaudeAPIClient:
+class ClaudeAPIClient(BaseAIClient):
     """Client for generating content using Claude API"""
     
     def __init__(self, base_dir: str = ".", use_cache: bool = True):
+        super().__init__(base_dir, use_cache)
         self.base_dir = Path(base_dir)
         
         # Load environment variables (try local first, then default)
@@ -82,6 +86,25 @@ class ClaudeAPIClient:
     def is_available(self) -> bool:
         """Check if Claude API is available and configured"""
         return self.available
+    
+    def get_model_name(self) -> str:
+        """Get the specific Claude model name"""
+        if hasattr(self, 'model') and self.model:
+            # Extract model version from full model name
+            # e.g., "claude-3-5-sonnet-20241022" -> "sonnet-3-5"
+            model_parts = self.model.split('-')
+            if 'sonnet' in model_parts:
+                # Find sonnet and version parts
+                sonnet_idx = model_parts.index('sonnet')
+                if sonnet_idx > 0:
+                    version_parts = model_parts[1:sonnet_idx]
+                    return f"sonnet-{'-'.join(version_parts)}"
+                return 'sonnet'
+            elif 'claude' in model_parts:
+                # For other Claude models, extract version
+                return '-'.join(model_parts[1:3]) if len(model_parts) > 2 else 'claude'
+            return self.model
+        return 'unknown'
     
     def generate_content(self, request: AIContentRequest) -> AIContentResponse:
         """

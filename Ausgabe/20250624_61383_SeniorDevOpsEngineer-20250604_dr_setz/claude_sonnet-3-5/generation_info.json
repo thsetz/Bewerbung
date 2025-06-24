@@ -1,0 +1,38 @@
+{
+  "generation_info": {
+    "timestamp": "2025-06-25T01:45:45.170160",
+    "ai_provider": "claude",
+    "ai_model": "sonnet-3-5",
+    "client_folder": "claude_sonnet-3-5"
+  },
+  "input_files": {
+    "job_description": "20250624_61383_SeniorDevOpsEngineer.txt",
+    "profile": "20250604_dr_setz.pdf"
+  },
+  "generated_content": {
+    "ai_variables": [
+      "einstiegstext",
+      "fachliche_passung",
+      "motivationstext",
+      "mehrwert",
+      "abschlusstext"
+    ],
+    "total_ai_variables": 5,
+    "einstiegstext_length": 500,
+    "einstiegstext_words": 67,
+    "fachliche_passung_length": 687,
+    "fachliche_passung_words": 88,
+    "motivationstext_length": 562,
+    "motivationstext_words": 60,
+    "mehrwert_length": 515,
+    "mehrwert_words": 63,
+    "abschlusstext_length": 245,
+    "abschlusstext_words": 37
+  },
+  "ai_client_stats": {
+    "cache_enabled": true,
+    "cached_items": 10,
+    "api_available": true,
+    "total_tokens_cached": 9636
+  }
+}

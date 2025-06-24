@@ -1,0 +1,39 @@
+{
+  "generation_info": {
+    "timestamp": "2025-06-25T01:45:46.129318",
+    "ai_provider": "sample",
+    "ai_model": "content",
+    "client_folder": "sample_content"
+  },
+  "input_files": {
+    "job_description": "20250624_61383_SeniorDevOpsEngineer.txt",
+    "profile": "20250604_dr_setz.pdf"
+  },
+  "generated_content": {
+    "ai_variables": [
+      "einstiegstext",
+      "fachliche_passung",
+      "motivationstext",
+      "mehrwert",
+      "abschlusstext"
+    ],
+    "total_ai_variables": 5,
+    "einstiegstext_length": 284,
+    "einstiegstext_words": 35,
+    "fachliche_passung_length": 273,
+    "fachliche_passung_words": 37,
+    "motivationstext_length": 285,
+    "motivationstext_words": 33,
+    "mehrwert_length": 271,
+    "mehrwert_words": 35,
+    "abschlusstext_length": 154,
+    "abschlusstext_words": 20
+  },
+  "ai_client_stats": {
+    "provider": "sample",
+    "model": "content",
+    "folder": "sample_content",
+    "available": true,
+    "cache_enabled": true
+  }
+}

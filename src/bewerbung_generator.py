@@ -5,6 +5,7 @@ Bewerbung Generator - Generates German job applications from profiles and job de
 
 import os
 import re
+import json
 from pathlib import Path
 from typing import Optional, Tuple, Dict
 
@@ -108,7 +109,7 @@ class BewerbungGenerator:
             import sys
             sys.path.insert(0, str(Path(__file__).parent))
             from template_manager import TemplateManager
-            from claude_api_client import ClaudeAPIClient
+            from ai_client_factory import AIClientFactory
         except ImportError as e:
             print(f"Error importing AI modules: {e}")
             print("Falling back to basic document generation")
@@ -116,15 +117,29 @@ class BewerbungGenerator:
         
         # Initialize managers
         template_manager = TemplateManager(str(self.base_dir))
-        claude_client = ClaudeAPIClient(str(self.base_dir))
+        ai_factory = AIClientFactory(str(self.base_dir))
+        ai_client = ai_factory.create_client()
+        
+        # Determine output structure
+        output_structure = os.getenv("OUTPUT_STRUCTURE", "legacy").lower()
+        include_metadata = os.getenv("INCLUDE_GENERATION_METADATA", "false").lower() == "true"
+        
+        # Create client-model specific output directory if needed
+        if output_structure in ["by_model", "both"]:
+            client_model_folder = ai_client.get_client_model_folder()
+            model_output_dir = output_dir / client_model_folder
+            model_output_dir.mkdir(parents=True, exist_ok=True)
+            print(f"📁 Using model-specific output: {client_model_folder}")
+        else:
+            model_output_dir = output_dir
         
         # Read input content
         job_content = job_file.read_text(encoding='utf-8')
         profile_content = f"Profile: {profile_file.name}"  # Placeholder for actual profile content
         
         # Extract company and position info
-        if claude_client.is_available():
-            company_info = claude_client.extract_company_and_position(job_content)
+        if ai_client.is_available():
+            company_info = ai_client.extract_company_and_position(job_content)
             company_name = company_info['company_name']
             position_title = company_info['position_title']
         else:
@@ -142,9 +157,9 @@ class BewerbungGenerator:
         print(f"Company: {company_name}, Position: {position_title}")
         
         # Generate AI content for cover letter
-        if claude_client.is_available():
+        if ai_client.is_available():
             print("Generating AI content...")
-            ai_content = claude_client.generate_all_cover_letter_content(
+            ai_content = ai_client.generate_all_cover_letter_content(
                 job_description=job_content,
                 profile_content=profile_content,
                 company_name=company_name,
@@ -161,7 +176,6 @@ class BewerbungGenerator:
         }
         
         # Set Adressat and job variables as environment variables (uppercase for template)
-        import os
         os.environ['ADRESSAT_FIRMA'] = company_info.get('adressat_firma', company_name)
         os.environ['ADRESSAT_STRASSE'] = company_info.get('adressat_strasse', '')
         os.environ['ADRESSAT_PLZ_ORT'] = company_info.get('adressat_plz_ort', '')
@@ -177,26 +191,71 @@ class BewerbungGenerator:
         generated_files = {}
         
         try:
-            # Generate cover letter
+            # Generate documents
             print("Rendering cover letter...")
             anschreiben_md = template_manager.render_anschreiben(adressat_data, ai_content)
-            anschreiben_path = output_dir / "anschreiben.md"
-            template_manager.save_rendered_template(anschreiben_md, anschreiben_path)
-            generated_files['anschreiben.md'] = anschreiben_path
             
-            # Generate CV
             print("Rendering CV...")
             lebenslauf_md = template_manager.render_lebenslauf()
-            lebenslauf_path = output_dir / "lebenslauf.md"
-            template_manager.save_rendered_template(lebenslauf_md, lebenslauf_path)
-            generated_files['lebenslauf.md'] = lebenslauf_path
             
-            # Generate attachments list
             print("Generating attachments list...")
             attachments_content = self._generate_attachments_list(profile_file)
-            attachments_path = output_dir / "anlagen.md"
-            attachments_path.write_text(attachments_content, encoding='utf-8')
-            generated_files['anlagen.md'] = attachments_path
+            
+            # Save to model-specific directory
+            self._save_documents_to_directory(
+                model_output_dir, 
+                anschreiben_md, 
+                lebenslauf_md, 
+                attachments_content,
+                template_manager
+            )
+            generated_files['model_output_dir'] = model_output_dir
+            
+            # If "both" structure, also save to legacy location
+            if output_structure == "both":
+                print("📁 Also saving to legacy structure...")
+                self._save_documents_to_directory(
+                    output_dir,
+                    anschreiben_md,
+                    lebenslauf_md, 
+                    attachments_content,
+                    template_manager
+                )
+                generated_files['legacy_output_dir'] = output_dir
+            
+            # Generate metadata if requested
+            if include_metadata:
+                metadata = self._generate_metadata(ai_client, job_file, profile_file, ai_content)
+                metadata_path = model_output_dir / "generation_info.json"
+                metadata_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False), encoding='utf-8')
+                print(f"📊 Generated metadata: {metadata_path}")
+                generated_files['metadata'] = metadata_path
+            
+            # Generate documentation if requested
+            generate_docs = os.getenv("GENERATE_DOCUMENTATION", "true").lower() == "true"
+            if generate_docs:
+                try:
+                    from documentation_generator import DocumentationGenerator
+                    doc_generator = DocumentationGenerator(str(self.base_dir))
+                    
+                    # Use metadata if available, otherwise create basic metadata
+                    doc_metadata = metadata if include_metadata else self._generate_metadata(ai_client, job_file, profile_file, ai_content)
+                    
+                    docs = doc_generator.generate_documentation(
+                        model_output_dir, 
+                        doc_metadata, 
+                        ai_content, 
+                        profile_file, 
+                        job_file
+                    )
+                    
+                    generated_files.update(docs)
+                    print(f"📚 Generated documentation: README.md, regeneration scripts")
+                    
+                except ImportError as e:
+                    print(f"⚠️  Documentation generation failed: {e}")
+                except Exception as e:
+                    print(f"⚠️  Error generating documentation: {e}")
             
             print("✓ Application documents generated successfully")
             return generated_files
@@ -273,19 +332,43 @@ Die folgenden Dokumente sind dieser Bewerbung beigefügt:
     
     def create_pdf_directory(self, output_dir: Path) -> Path:
         """
-        Step 5: Create pdf/ subdirectory in output directory
+        Step 5: Create pdf/ subdirectory in output directory(ies)
         """
         print("=== Step 5: Creating PDF directory ===")
         
-        pdf_dir = output_dir / "pdf"
-        pdf_dir.mkdir(exist_ok=True)
+        # Handle new folder structure - check if we have model-specific folders
+        output_structure = os.getenv("OUTPUT_STRUCTURE", "legacy").lower()
         
-        print(f"Created PDF directory: {pdf_dir}")
-        return pdf_dir
+        if output_structure in ["by_model", "both"]:
+            # Find model-specific folders and create PDF dirs in each
+            pdf_dirs = []
+            for item in output_dir.iterdir():
+                if item.is_dir() and not item.name.startswith('.'):
+                    # Check if this looks like a model folder (contains underscores)
+                    if '_' in item.name:
+                        pdf_dir = item / "pdf"
+                        pdf_dir.mkdir(parents=True, exist_ok=True)
+                        pdf_dirs.append(pdf_dir)
+                        print(f"Created PDF directory: {pdf_dir}")
+            
+            # Also create legacy PDF dir if "both" structure
+            if output_structure == "both":
+                legacy_pdf_dir = output_dir / "pdf"
+                legacy_pdf_dir.mkdir(parents=True, exist_ok=True)
+                pdf_dirs.append(legacy_pdf_dir)
+                print(f"Created legacy PDF directory: {legacy_pdf_dir}")
+            
+            return pdf_dirs[0] if pdf_dirs else output_dir / "pdf"  # Return first one for compatibility
+        else:
+            # Legacy structure
+            pdf_dir = output_dir / "pdf"
+            pdf_dir.mkdir(exist_ok=True)
+            print(f"Created PDF directory: {pdf_dir}")
+            return pdf_dir
     
     def convert_documents_to_pdf(self, markdown_files: Dict[str, Path], pdf_dir: Path) -> Dict[str, Path]:
         """
-        Step 6: Convert documents to PDF format
+        Step 6: Convert documents to PDF format in all relevant directories
         """
         print("=== Step 6: Converting documents to PDF ===")
         
@@ -307,35 +390,123 @@ Die folgenden Dokumente sind dieser Bewerbung beigefügt:
             print("   Install system dependencies: brew install pango")
             return {}
         
+        # Determine which directories contain markdown files to convert
+        output_structure = os.getenv("OUTPUT_STRUCTURE", "legacy").lower()
+        conversion_dirs = []
+        
+        if output_structure in ["by_model", "both"]:
+            # Find all model-specific directories that contain markdown files
+            main_output_dir = pdf_dir.parent  # Get back to main output directory
+            for item in main_output_dir.iterdir():
+                if item.is_dir() and '_' in item.name:  # Model folder
+                    md_files = list(item.glob("*.md"))
+                    if md_files:
+                        pdf_subdir = item / "pdf"
+                        pdf_subdir.mkdir(exist_ok=True)
+                        conversion_dirs.append((item, pdf_subdir, md_files))
+            
+            # Also handle legacy dir if "both" structure
+            if output_structure == "both":
+                legacy_md_files = list(main_output_dir.glob("*.md"))
+                if legacy_md_files:
+                    legacy_pdf_dir = main_output_dir / "pdf"
+                    conversion_dirs.append((main_output_dir, legacy_pdf_dir, legacy_md_files))
+        else:
+            # Legacy structure - use provided parameters
+            md_files = [path for path in markdown_files.values()]
+            conversion_dirs.append((pdf_dir.parent, pdf_dir, md_files))
+        
         generated_pdfs = {}
+        total_converted = 0
         
-        for md_name, md_path in markdown_files.items():
-            try:
-                # Read markdown content
-                markdown_content = md_path.read_text(encoding='utf-8')
-                
-                # Generate PDF filename
-                pdf_name = md_name.replace('.md', '.pdf')
-                pdf_path = pdf_dir / pdf_name
-                
-                # Convert to PDF
-                title = md_name.replace('.md', '').replace('_', ' ').title()
-                pdf_generator.markdown_to_pdf(markdown_content, pdf_path, title)
-                
-                generated_pdfs[md_name] = pdf_path
-                
-                # Also save HTML preview
-                html_name = md_name.replace('.md', '.html')
-                html_path = pdf_dir / html_name
-                html_content = pdf_generator.markdown_to_html(markdown_content, title)
-                pdf_generator.save_html_preview(html_content, html_path)
-                
-            except Exception as e:
-                print(f"Error converting {md_name} to PDF: {e}")
-                continue
+        for source_dir, target_pdf_dir, md_files in conversion_dirs:
+            print(f"Converting files in {source_dir.name}...")
+            
+            for md_path in md_files:
+                try:
+                    # Read markdown content
+                    markdown_content = md_path.read_text(encoding='utf-8')
+                    
+                    # Generate PDF filename
+                    pdf_name = md_path.name.replace('.md', '.pdf')
+                    pdf_path = target_pdf_dir / pdf_name
+                    
+                    print(f"Converting markdown to PDF: {pdf_path}")
+                    
+                    # Convert to PDF
+                    title = md_path.stem.replace('_', ' ').title()
+                    pdf_generator.markdown_to_pdf(markdown_content, pdf_path, title)
+                    
+                    generated_pdfs[f"{source_dir.name}/{pdf_name}"] = pdf_path
+                    total_converted += 1
+                    
+                    # Also save HTML preview
+                    html_name = md_path.name.replace('.md', '.html')
+                    html_path = target_pdf_dir / html_name
+                    html_content = pdf_generator.markdown_to_html(markdown_content, title)
+                    pdf_generator.save_html_preview(html_content, html_path)
+                    
+                except Exception as e:
+                    print(f"Error converting {md_path.name} to PDF: {e}")
+                    continue
         
-        print(f"✓ Converted {len(generated_pdfs)} documents to PDF")
+        print(f"✓ Converted {total_converted} documents to PDF")
         return generated_pdfs
+    
+    def _save_documents_to_directory(self, target_dir: Path, anschreiben_md: str, 
+                                   lebenslauf_md: str, attachments_content: str, 
+                                   template_manager) -> Dict[str, Path]:
+        """Save all documents to a specific directory"""
+        generated_files = {}
+        
+        # Save cover letter
+        anschreiben_path = target_dir / "anschreiben.md"
+        template_manager.save_rendered_template(anschreiben_md, anschreiben_path)
+        generated_files['anschreiben.md'] = anschreiben_path
+        
+        # Save CV
+        lebenslauf_path = target_dir / "lebenslauf.md"
+        template_manager.save_rendered_template(lebenslauf_md, lebenslauf_path)
+        generated_files['lebenslauf.md'] = lebenslauf_path
+        
+        # Save attachments
+        attachments_path = target_dir / "anlagen.md"
+        attachments_path.write_text(attachments_content, encoding='utf-8')
+        generated_files['anlagen.md'] = attachments_path
+        
+        return generated_files
+    
+    def _generate_metadata(self, ai_client, job_file: Path, profile_file: Path, 
+                          ai_content: Dict[str, str]) -> Dict[str, any]:
+        """Generate metadata about the content generation process"""
+        import time
+        from datetime import datetime
+        
+        metadata = {
+            "generation_info": {
+                "timestamp": datetime.now().isoformat(),
+                "ai_provider": ai_client.get_provider_name(),
+                "ai_model": ai_client.get_model_name(),
+                "client_folder": ai_client.get_client_model_folder()
+            },
+            "input_files": {
+                "job_description": job_file.name,
+                "profile": profile_file.name
+            },
+            "generated_content": {
+                "ai_variables": list(ai_content.keys()),
+                "total_ai_variables": len(ai_content)
+            },
+            "ai_client_stats": ai_client.get_usage_stats()
+        }
+        
+        # Add content lengths for analysis
+        for key, content in ai_content.items():
+            if isinstance(content, str):
+                metadata["generated_content"][f"{key}_length"] = len(content)
+                metadata["generated_content"][f"{key}_words"] = len(content.split())
+        
+        return metadata
 
 def main():
     """
