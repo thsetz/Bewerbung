@@ -204,194 +204,190 @@ class BewerbungGenerator:
         # Initialize managers
         template_manager = TemplateManager(str(self.base_dir))
         ai_factory = AIClientFactory(str(self.base_dir))
-        ai_client = ai_factory.create_client(use_cache=use_cache)
         
-        # Determine output structure
-        output_structure = os.getenv("OUTPUT_STRUCTURE", "legacy").lower()
+        # Determine output structure and multi-provider generation
+        output_structure = os.getenv("OUTPUT_STRUCTURE", "by_model").lower()
         include_metadata = os.getenv("INCLUDE_GENERATION_METADATA", "false").lower() == "true"
+        generate_all_providers = os.getenv("GENERATE_ALL_PROVIDERS", "true").lower() == "true"
         
-        # Create client-model specific output directory if needed
-        if output_structure in ["by_model", "both"]:
-            client_model_folder = ai_client.get_client_model_folder()
-            model_output_dir = output_dir / client_model_folder
-            model_output_dir.mkdir(parents=True, exist_ok=True)
-            print(f"📁 Using model-specific output: {client_model_folder}")
+        # Get AI clients based on generation mode
+        if generate_all_providers:
+            ai_clients = ai_factory.get_all_available_clients(use_cache=use_cache)
+            print(f"🔄 Multi-provider generation enabled: {len(ai_clients)} providers")
         else:
-            model_output_dir = output_dir
+            ai_client = ai_factory.create_client(use_cache=use_cache)
+            ai_clients = [ai_client]
+            print(f"📁 Single-provider generation: {ai_client.get_client_model_folder()}")
         
-        # Setup logging
-        logger = self.setup_logging(model_output_dir)
-        logger.info(f"Output structure: {output_structure}")
-        logger.info(f"Model output directory: {model_output_dir}")
-        logger.info(f"AI client: {ai_client.__class__.__name__}")
-        logger.info(f"AI model: {ai_client.get_model_name()}")
-        logger.info(f"Include metadata: {include_metadata}")
-        
-        # Read input content
-        logger.info(f"Reading job description: {job_file.name}")
-        logger.info(f"Reading profile: {profile_file.name}")
+        # Read input content once for all providers
         job_content = job_file.read_text(encoding='utf-8')
         profile_content = f"Profile: {profile_file.name}"  # Placeholder for actual profile content
         
-        # Extract company and position info
-        logger.info("Extracting company and position information")
-        if ai_client.is_available():
-            company_info = ai_client.extract_company_and_position(job_content)
-            company_name = company_info['company_name']
-            position_title = company_info['position_title']
-            logger.info(f"AI extraction successful: {company_name} - {position_title}")
-        else:
-            company_name = "Beispiel Unternehmen GmbH"
-            position_title = "Software Engineer"
-            company_info = {
-                'company_name': company_name,
-                'position_title': position_title,
-                'adressat_firma': company_name,
-                'adressat_strasse': 'Musterstraße 1',
-                'adressat_plz_ort': '12345 Musterstadt',
-                'adressat_land': 'Deutschland'
-            }
-            logger.info(f"Using fallback company info: {company_name} - {position_title}")
-        
-        print(f"Company: {company_name}, Position: {position_title}")
-        
-        # Generate AI content for cover letter
-        logger.info("Starting AI content generation")
-        if ai_client.is_available():
-            print("Generating AI content...")
-            logger.info("AI provider available - generating personalized content")
-            ai_content = ai_client.generate_all_cover_letter_content(
-                job_description=job_content,
-                profile_content=profile_content,
-                company_name=company_name,
-                position_title=position_title
-            )
-            logger.info("AI content generation completed successfully")
-        else:
-            print("Using sample AI content...")
-            logger.warning("AI provider not available - using sample content")
-            from ai_content_generator import generate_sample_ai_content
-            ai_content = generate_sample_ai_content()
-            logger.info("Sample content loaded")
-        
-        # Addressee data for cover letter (lowercase for dynamic content)
-        adressat_data = {
-            'position': position_title,
-        }
-        
-        # Set Adressat and job variables as environment variables (uppercase for template)
-        os.environ['ADRESSAT_FIRMA'] = company_info.get('adressat_firma', company_name)
-        os.environ['ADRESSAT_STRASSE'] = company_info.get('adressat_strasse', '')
-        os.environ['ADRESSAT_PLZ_ORT'] = company_info.get('adressat_plz_ort', '')
-        os.environ['ADRESSAT_LAND'] = company_info.get('adressat_land', 'Deutschland')
-        os.environ['STELLE'] = company_info.get('stelle', position_title)
-        os.environ['STELLEN_ID'] = company_info.get('stellen_id', '')
-        
-        logger.info(f"Adressat: {os.environ['ADRESSAT_FIRMA']}")
-        logger.info(f"Stelle: {os.environ['STELLE']}")
-        logger.info(f"Stellen-ID: {os.environ['STELLEN_ID']}")
-        
-        print(f"Adressat: {os.environ['ADRESSAT_FIRMA']}")
-        print(f"Stelle: {os.environ['STELLE']}")
-        print(f"Stellen-ID: {os.environ['STELLEN_ID']}")
-        
-        # Generate documents
+        # Initialize generated files collection
         generated_files = {}
         
-        try:
-            # Generate documents
-            logger.info("Starting document generation")
-            print("Rendering cover letter...")
-            logger.info("Rendering cover letter template")
-            anschreiben_md = template_manager.render_anschreiben(adressat_data, ai_content)
+        # Process each AI client
+        for ai_client in ai_clients:
+            client_model_folder = ai_client.get_client_model_folder()
+            model_output_dir = output_dir / client_model_folder
+            model_output_dir.mkdir(parents=True, exist_ok=True)
+            print(f"📁 Processing provider: {client_model_folder}")
             
-            print("Rendering CV...")
-            logger.info("Rendering CV template")
-            lebenslauf_md = template_manager.render_lebenslauf()
+            # Setup logging for this provider
+            logger = self.setup_logging(model_output_dir)
+            logger.info(f"Output structure: {output_structure}")
+            logger.info(f"Model output directory: {model_output_dir}")
+            logger.info(f"AI client: {ai_client.__class__.__name__}")
+            logger.info(f"AI model: {ai_client.get_model_name()}")
+            logger.info(f"Include metadata: {include_metadata}")
+            logger.info(f"Reading job description: {job_file.name}")
+            logger.info(f"Reading profile: {profile_file.name}")
             
-            print("Generating attachments list...")
-            logger.info("Generating attachments list")
-            attachments_content = self._generate_attachments_list(profile_file)
+            # Extract company and position info for this provider
+            logger.info("Extracting company and position information")
+            if ai_client.is_available():
+                company_info = ai_client.extract_company_and_position(job_content)
+                company_name = company_info['company_name']
+                position_title = company_info['position_title']
+                logger.info(f"AI extraction successful: {company_name} - {position_title}")
+            else:
+                company_name = "Beispiel Unternehmen GmbH"
+                position_title = "Software Engineer"
+                company_info = {
+                    'company_name': company_name,
+                    'position_title': position_title,
+                    'adressat_firma': company_name,
+                    'adressat_strasse': 'Musterstraße 1',
+                    'adressat_plz_ort': '12345 Musterstadt',
+                    'adressat_land': 'Deutschland'
+                }
+                logger.info(f"Using fallback company info: {company_name} - {position_title}")
             
-            # Save to model-specific directory
-            logger.info(f"Saving documents to model directory: {model_output_dir}")
-            self._save_documents_to_directory(
-                model_output_dir, 
-                anschreiben_md, 
-                lebenslauf_md, 
-                attachments_content,
-                template_manager
-            )
-            generated_files['model_output_dir'] = model_output_dir
-            logger.info("Documents saved to model directory successfully")
+            print(f"Provider {client_model_folder}: {company_name}, {position_title}")
             
-            # If "both" structure, also save to legacy location
-            if output_structure == "both":
-                print("📁 Also saving to legacy structure...")
-                logger.info(f"Also saving to legacy directory: {output_dir}")
+            # Generate AI content for cover letter for this provider
+            logger.info("Starting AI content generation")
+            if ai_client.is_available():
+                print("Generating AI content...")
+                logger.info("AI provider available - generating personalized content")
+                ai_content = ai_client.generate_all_cover_letter_content(
+                    job_description=job_content,
+                    profile_content=profile_content,
+                    company_name=company_name,
+                    position_title=position_title
+                )
+                logger.info("AI content generation completed successfully")
+            else:
+                print("Using sample AI content...")
+                logger.warning("AI provider not available - using sample content")
+                from ai_content_generator import generate_sample_ai_content
+                ai_content = generate_sample_ai_content()
+                logger.info("Sample content loaded")
+            
+            # Addressee data for cover letter (lowercase for dynamic content)
+            adressat_data = {
+                'position': position_title,
+            }
+            
+            # Set Adressat and job variables as environment variables (uppercase for template)
+            os.environ['ADRESSAT_FIRMA'] = company_info.get('adressat_firma', company_name)
+            os.environ['ADRESSAT_STRASSE'] = company_info.get('adressat_strasse', '')
+            os.environ['ADRESSAT_PLZ_ORT'] = company_info.get('adressat_plz_ort', '')
+            os.environ['ADRESSAT_LAND'] = company_info.get('adressat_land', 'Deutschland')
+            os.environ['STELLE'] = company_info.get('stelle', position_title)
+            os.environ['STELLEN_ID'] = company_info.get('stellen_id', '')
+            
+            logger.info(f"Adressat: {os.environ['ADRESSAT_FIRMA']}")
+            logger.info(f"Stelle: {os.environ['STELLE']}")
+            logger.info(f"Stellen-ID: {os.environ['STELLEN_ID']}")
+            
+            print(f"Adressat: {os.environ['ADRESSAT_FIRMA']}")
+            print(f"Stelle: {os.environ['STELLE']}")
+            print(f"Stellen-ID: {os.environ['STELLEN_ID']}")
+            
+            try:
+                # Generate documents for this provider
+                logger.info("Starting document generation")
+                print("Rendering cover letter...")
+                logger.info("Rendering cover letter template")
+                anschreiben_md = template_manager.render_anschreiben(adressat_data, ai_content)
+                
+                print("Rendering CV...")
+                logger.info("Rendering CV template")
+                lebenslauf_md = template_manager.render_lebenslauf()
+                
+                print("Generating attachments list...")
+                logger.info("Generating attachments list")
+                attachments_content = self._generate_attachments_list(profile_file)
+                
+                # Save to model-specific directory (directory-only structure)
+                logger.info(f"Saving documents to model directory: {model_output_dir}")
                 self._save_documents_to_directory(
-                    output_dir,
-                    anschreiben_md,
+                    model_output_dir, 
+                    anschreiben_md, 
                     lebenslauf_md, 
                     attachments_content,
                     template_manager
                 )
-                generated_files['legacy_output_dir'] = output_dir
-                logger.info("Documents saved to legacy directory successfully")
-            
-            # Generate metadata if requested
-            if include_metadata:
-                logger.info("Generating metadata file")
-                metadata = self._generate_metadata(ai_client, job_file, profile_file, ai_content)
-                metadata_path = model_output_dir / "generation_info.json"
-                metadata_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False), encoding='utf-8')
-                print(f"📊 Generated metadata: {metadata_path}")
-                generated_files['metadata'] = metadata_path
-                logger.info(f"Metadata saved: {metadata_path}")
-            
-            # Generate documentation if requested
-            generate_docs = os.getenv("GENERATE_DOCUMENTATION", "true").lower() == "true"
-            if generate_docs:
-                logger.info("Starting documentation generation")
-                try:
-                    from documentation_generator import DocumentationGenerator
-                    doc_generator = DocumentationGenerator(str(self.base_dir))
-                    
-                    # Use metadata if available, otherwise create basic metadata
-                    doc_metadata = metadata if include_metadata else self._generate_metadata(ai_client, job_file, profile_file, ai_content)
-                    
-                    docs = doc_generator.generate_documentation(
-                        model_output_dir, 
-                        doc_metadata, 
-                        ai_content, 
-                        profile_file, 
-                        job_file
-                    )
-                    
-                    generated_files.update(docs)
-                    print(f"📚 Generated documentation: README.md, regeneration scripts")
-                    logger.info("Documentation generation completed successfully")
-                    
-                except ImportError as e:
-                    logger.error(f"Documentation generation failed - ImportError: {e}")
-                    print(f"⚠️  Documentation generation failed: {e}")
-                except Exception as e:
-                    logger.error(f"Documentation generation error: {e}")
-                    print(f"⚠️  Error generating documentation: {e}")
-            else:
-                logger.info("Documentation generation skipped (GENERATE_DOCUMENTATION=false)")
-            
-            logger.info("=== Bewerbung Generation Completed Successfully ===")
-            logger.info(f"Generated files: {list(generated_files.keys())}")
-            logger.info(f"Total processing time: {datetime.now().isoformat()}")
-            print("✓ Application documents generated successfully")
-            return generated_files
-            
-        except Exception as e:
-            logger.error(f"Error during generation: {e}")
-            logger.warning("Falling back to basic document generation")
-            print(f"Error generating documents: {e}")
-            return self._generate_basic_documents(output_dir, profile_file, job_file)
+                generated_files[f'{client_model_folder}_output_dir'] = model_output_dir
+                logger.info("Documents saved to model directory successfully")
+                
+                # Generate metadata if requested
+                if include_metadata:
+                    logger.info("Generating metadata file")
+                    metadata = self._generate_metadata(ai_client, job_file, profile_file, ai_content)
+                    metadata_path = model_output_dir / "generation_info.json"
+                    metadata_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False), encoding='utf-8')
+                    print(f"📊 Generated metadata: {metadata_path}")
+                    generated_files[f'{client_model_folder}_metadata'] = metadata_path
+                    logger.info(f"Metadata saved: {metadata_path}")
+                
+                # Generate documentation if requested
+                generate_docs = os.getenv("GENERATE_DOCUMENTATION", "true").lower() == "true"
+                if generate_docs:
+                    logger.info("Starting documentation generation")
+                    try:
+                        from documentation_generator import DocumentationGenerator
+                        doc_generator = DocumentationGenerator(str(self.base_dir))
+                        
+                        # Use metadata if available, otherwise create basic metadata
+                        doc_metadata = metadata if include_metadata else self._generate_metadata(ai_client, job_file, profile_file, ai_content)
+                        
+                        docs = doc_generator.generate_documentation(
+                            model_output_dir, 
+                            doc_metadata, 
+                            ai_content, 
+                            profile_file, 
+                            job_file
+                        )
+                        
+                        for doc_name, doc_path in docs.items():
+                            generated_files[f'{client_model_folder}_{doc_name}'] = doc_path
+                        print(f"📚 Generated documentation: README.md, regeneration scripts")
+                        logger.info("Documentation generation completed successfully")
+                        
+                    except ImportError as e:
+                        logger.error(f"Documentation generation failed - ImportError: {e}")
+                        print(f"⚠️  Documentation generation failed: {e}")
+                    except Exception as e:
+                        logger.error(f"Documentation generation error: {e}")
+                        print(f"⚠️  Error generating documentation: {e}")
+                else:
+                    logger.info("Documentation generation skipped (GENERATE_DOCUMENTATION=false)")
+                
+                logger.info(f"=== Provider {client_model_folder} Generation Completed Successfully ===")
+                logger.info(f"Generated files: {[k for k in generated_files.keys() if client_model_folder in k]}")
+                print(f"✓ {client_model_folder} documents generated successfully")
+                
+            except Exception as e:
+                logger.error(f"Error during {client_model_folder} generation: {e}")
+                print(f"❌ Error generating {client_model_folder} documents: {e}")
+                # Continue with next provider
+                continue
+        
+        # Return all generated files from all providers
+        print(f"\n✅ Multi-provider generation completed! Generated {len(ai_clients)} provider outputs")
+        return generated_files
     
     def _generate_basic_documents(self, output_dir: Path, profile_file: Path, job_file: Path) -> Dict[str, Path]:
         """Fallback method for basic document generation without AI"""
@@ -465,35 +461,18 @@ Die folgenden Dokumente sind dieser Bewerbung beigefügt:
         """
         print("=== Step 5: Creating PDF directory ===")
         
-        # Handle new folder structure - check if we have model-specific folders
-        output_structure = os.getenv("OUTPUT_STRUCTURE", "legacy").lower()
+        # Handle directory-only structure - create PDF dirs in all model-specific folders
+        pdf_dirs = []
+        for item in output_dir.iterdir():
+            if item.is_dir() and not item.name.startswith('.'):
+                # Check if this looks like a model folder (contains underscores)
+                if '_' in item.name:
+                    pdf_dir = item / "pdf"
+                    pdf_dir.mkdir(parents=True, exist_ok=True)
+                    pdf_dirs.append(pdf_dir)
+                    print(f"Created PDF directory: {pdf_dir}")
         
-        if output_structure in ["by_model", "both"]:
-            # Find model-specific folders and create PDF dirs in each
-            pdf_dirs = []
-            for item in output_dir.iterdir():
-                if item.is_dir() and not item.name.startswith('.'):
-                    # Check if this looks like a model folder (contains underscores)
-                    if '_' in item.name:
-                        pdf_dir = item / "pdf"
-                        pdf_dir.mkdir(parents=True, exist_ok=True)
-                        pdf_dirs.append(pdf_dir)
-                        print(f"Created PDF directory: {pdf_dir}")
-            
-            # Also create legacy PDF dir if "both" structure
-            if output_structure == "both":
-                legacy_pdf_dir = output_dir / "pdf"
-                legacy_pdf_dir.mkdir(parents=True, exist_ok=True)
-                pdf_dirs.append(legacy_pdf_dir)
-                print(f"Created legacy PDF directory: {legacy_pdf_dir}")
-            
-            return pdf_dirs[0] if pdf_dirs else output_dir / "pdf"  # Return first one for compatibility
-        else:
-            # Legacy structure
-            pdf_dir = output_dir / "pdf"
-            pdf_dir.mkdir(exist_ok=True)
-            print(f"Created PDF directory: {pdf_dir}")
-            return pdf_dir
+        return pdf_dirs[0] if pdf_dirs else output_dir / "pdf"  # Return first one for compatibility
     
     def convert_documents_to_pdf(self, markdown_files: Dict[str, Path], pdf_dir: Path) -> Dict[str, Path]:
         """
@@ -519,31 +498,17 @@ Die folgenden Dokumente sind dieser Bewerbung beigefügt:
             print("   Install system dependencies: brew install pango")
             return {}
         
-        # Determine which directories contain markdown files to convert
-        output_structure = os.getenv("OUTPUT_STRUCTURE", "legacy").lower()
+        # Find all model-specific directories that contain markdown files (directory-only structure)
+        main_output_dir = pdf_dir.parent.parent  # Get back to main output directory 
         conversion_dirs = []
         
-        if output_structure in ["by_model", "both"]:
-            # Find all model-specific directories that contain markdown files
-            main_output_dir = pdf_dir.parent  # Get back to main output directory
-            for item in main_output_dir.iterdir():
-                if item.is_dir() and '_' in item.name:  # Model folder
-                    md_files = list(item.glob("*.md"))
-                    if md_files:
-                        pdf_subdir = item / "pdf"
-                        pdf_subdir.mkdir(exist_ok=True)
-                        conversion_dirs.append((item, pdf_subdir, md_files))
-            
-            # Also handle legacy dir if "both" structure
-            if output_structure == "both":
-                legacy_md_files = list(main_output_dir.glob("*.md"))
-                if legacy_md_files:
-                    legacy_pdf_dir = main_output_dir / "pdf"
-                    conversion_dirs.append((main_output_dir, legacy_pdf_dir, legacy_md_files))
-        else:
-            # Legacy structure - use provided parameters
-            md_files = [path for path in markdown_files.values()]
-            conversion_dirs.append((pdf_dir.parent, pdf_dir, md_files))
+        for item in main_output_dir.iterdir():
+            if item.is_dir() and '_' in item.name:  # Model folder
+                md_files = list(item.glob("*.md"))
+                if md_files:
+                    pdf_subdir = item / "pdf"
+                    pdf_subdir.mkdir(exist_ok=True)
+                    conversion_dirs.append((item, pdf_subdir, md_files))
         
         generated_pdfs = {}
         total_converted = 0

@@ -139,6 +139,34 @@ class AIClientFactory:
         }
         
         return results
+    
+    def get_all_available_clients(self, use_cache: bool = True) -> List[BaseAIClient]:
+        """
+        Get all available AI clients instead of just the first working one
+        
+        Returns:
+            List of working AI clients in priority order: [Llama, Claude, Sample]
+        """
+        clients = []
+        
+        # Try Llama client
+        llama_client = self._try_llama_client(use_cache)
+        if llama_client and llama_client.is_available():
+            clients.append(llama_client)
+            print(f"🦙 Llama client available ({llama_client.get_model_name()})")
+        
+        # Try Claude client
+        claude_client = self._try_claude_client(use_cache)
+        if claude_client and claude_client.is_available():
+            clients.append(claude_client)
+            print(f"🤖 Claude client available ({claude_client.get_model_name()})")
+        
+        # Always include sample client as fallback
+        sample_client = self._get_fallback_client(use_cache)
+        clients.append(sample_client)
+        print(f"📝 Sample client available (fallback)")
+        
+        return clients
 
 
 class SampleAIClient(BaseAIClient):

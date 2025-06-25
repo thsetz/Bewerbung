@@ -96,27 +96,28 @@ flowchart LR
     style Success fill:#e8f5e8
 ```
 
-## 📊 Output Structure Options
+## 🏗️ Directory-Only Output Structure
+
+The generator uses a **clean directory-only structure** for organized output:
 
 ```mermaid
 flowchart TD
-    Config[OUTPUT_STRUCTURE] --> Decision{Structure Type}
+    Config[OUTPUT_STRUCTURE="by_model"] --> Structure[🗂️ Directory-Only Structure]
     
-    Decision -->|legacy| Legacy[📁 Legacy Structure<br/>Single output directory]
-    Decision -->|by_model| ByModel[📂 By-Model Structure<br/>Separate AI provider dirs]
-    Decision -->|both| Both[📁📂 Both Structures<br/>Legacy + By-Model]
+    Structure --> Output[Ausgabe/job-profile/<br/>├── sample_content/<br/>│   ├── anschreiben.md<br/>│   ├── lebenslauf.md<br/>│   ├── README.md<br/>│   └── pdf/<br/>├── claude_sonnet_3_5/<br/>│   ├── anschreiben.md<br/>│   ├── lebenslauf.md<br/>│   └── pdf/<br/>└── llama_3_1_8b/<br/>    ├── anschreiben.md<br/>    └── pdf/]
     
-    Legacy --> LegacyOut[Ausgabe/job-profile/<br/>├── anschreiben.md<br/>├── lebenslauf.md<br/>├── anlagen.md<br/>└── pdf/]
+    Structure --> Benefits[✅ Benefits<br/>• No root files<br/>• Clean separation<br/>• Easy comparison<br/>• Provider-specific docs]
     
-    ByModel --> ModelOut[Ausgabe/job-profile/<br/>├── claude_sonnet-3-5/<br/>├── llama_3-2-latest/<br/>└── sample_content/]
-    
-    Both --> LegacyOut
-    Both --> ModelOut
-    
-    style Legacy fill:#e1f5fe
-    style ByModel fill:#f3e5f5
-    style Both fill:#e8f5e8
+    style Structure fill:#e8f5e8
+    style Output fill:#f3e5f5
+    style Benefits fill:#e1f5fe
 ```
+
+**Key Features:**
+- **No Root Files**: All documents are contained within AI provider subdirectories
+- **Clean Organization**: Each AI provider gets its own folder (e.g., `sample_content/`, `claude_sonnet_3_5/`)
+- **Easy Comparison**: Compare outputs from different AI providers side-by-side
+- **Self-Contained**: Each folder includes provider-specific documentation and PDFs
 
 ## 🛠️ System Requirements
 
@@ -124,6 +125,9 @@ flowchart TD
 ```bash
 # macOS
 brew install cffi fonttools pango pillow six
+
+# Install ripgrep for fast code searching
+brew install ripgrep
 
 # Install Python dependencies
 make install

@@ -85,8 +85,8 @@ Features
 ✨ **Multi-Provider AI Support**
    Support for Claude API, Ollama/Llama, and sample content fallback
 
-🏗️ **Flexible Output Organization** 
-   Organize generated content by AI client/model or legacy structure
+🏗️ **Directory-Only Organization** 
+   Clean structure with AI provider subdirectories, no root files
 
 📚 **Comprehensive Documentation**
    Auto-generated README files and regeneration scripts for each output
