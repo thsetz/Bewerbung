@@ -1,6 +1,6 @@
 # Makefile for Bewerbung Generator
 
-.PHONY: test_1 test_2 test_3 test_4 test test_memory test-coverage coverage-report coverage-xml coverage-clean install clean venv generate variants variants-detailed docs docs-pdf docs-clean docs-serve docs-check docs-all clear-cache generate-fresh generate-cached cache-status test-documentation-generator test-version-management release-major release-minor release-patch test-make-release
+.PHONY: test_1 test_2 test_3 test_4 test test_memory test-coverage coverage-report coverage-xml coverage-clean install clean venv generate variants variants-detailed docs docs-pdf docs-clean docs-serve docs-check docs-all clear-cache generate-fresh generate-cached cache-status test-documentation-generator test-version-management release-major release-minor release-patch test-make-release test-links analyze-links
 
 # Create virtual environment if it doesn't exist
 venv:
@@ -133,6 +133,27 @@ test-make-release: venv
 	else \
 		python -m pytest tests/test_make_release.py -v; \
 	fi
+
+# Test documentation links validation
+test-links: venv
+	@echo "🔗 Running documentation link validation tests..."
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		. .venv/bin/activate && python -m pytest tests/test_links_in_documentation.py -v; \
+	else \
+		python -m pytest tests/test_links_in_documentation.py -v; \
+	fi
+
+# Generate link analysis files (persistent output)
+analyze-links: venv
+	@echo "🔍 Generating persistent link analysis files..."
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		. .venv/bin/activate && python tests/test_links_in_documentation.py --phase both --output-dir .; \
+	else \
+		python tests/test_links_in_documentation.py --phase both --output-dir .; \
+	fi
+	@echo "📁 Generated files:"
+	@echo "  - index.links (discovered links)"
+	@echo "  - link_test_report.json (validation results)"
 
 # Run tests with coverage collection (excluding performance tests)
 test-coverage: venv

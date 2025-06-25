@@ -1,0 +1,413 @@
+{
+  "metadata": {
+    "source_url": "https://thsetz.github.io/Bewerbung/index.html",
+    "extraction_time": "2025-06-25T09:41:18.236144",
+    "total_links": 101
+  },
+  "links": [
+    {
+      "url": "https://github.com/pradyunsg/furo",
+      "type": "external"
+    },
+    {
+      "url": "https://github.com/thsetz/Bewerbung",
+      "type": "external"
+    },
+    {
+      "url": "https://github.com/thsetz/Bewerbung/blob/main/docs/index.rst?plain=true",
+      "type": "internal"
+    },
+    {
+      "url": "https://github.com/thsetz/Bewerbung/edit/main/docs/index.rst",
+      "type": "internal"
+    },
+    {
+      "url": "https://pradyunsg.me",
+      "type": "external"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/_static/ai-provider-selection.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/_static/coverage/index.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/_static/system-workflow.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/ai_client_factory.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/ai_content_generator.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/base_ai_client.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/bewerbung_generator.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/claude_api_client.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/content_variants_analyzer.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/documentation_generator.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/llama_api_client.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/template_manager.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/ai_client_factory.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/base_ai_client.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/bewerbung_generator.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/modules.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/modules.html#ai-clients",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/modules.html#analysis-and-testing",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/modules.html#core-modules",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/modules.html#module-index",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/modules.html#utilities",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#configuration-management",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#core-components",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#data-flow",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#design-patterns",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#error-handling-strategy",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#future-architecture-enhancements",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#high-level-architecture",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#module-dependencies",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#performance-considerations",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#security-considerations",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#system-overview",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#testing-strategy",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/genindex.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#ai-provider-selection",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#architecture-overview",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#bewerbung-generator-documentation",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#features",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#furo-main-content",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#indices-and-tables",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#quick-start",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#supported-ai-providers",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#system-workflow",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/py-modindex.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/search.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#ci-cd-integration",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#coverage-best-practices",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#coverage-configuration",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#coverage-overview",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#coverage-targets-by-module",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#current-coverage-status",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#improving-coverage",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#related-resources",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#running-coverage-tests",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#understanding-coverage-reports",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#advanced-configuration",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#ai-provider-settings",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#configuration-validation",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#environment-file-examples",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#environment-variables",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#file-organization-patterns",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#logging-configuration",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#template-configuration",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html#ai-provider-setup",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html#installation-steps",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html#next-steps",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html#quick-setup-script",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html#requirements",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html#system-dependencies",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html#troubleshooting",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#advanced-generation-options",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#common-issues",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#next-steps",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#prerequisites",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#regeneration-scripts",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#testing-your-setup",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#understanding-generated-content",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#understanding-the-output-structure",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#using-different-ai-providers",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#your-first-application",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html",
+      "type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#next-steps",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#tutorial-1-basic-application-generation",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#tutorial-2-comparing-ai-providers",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#tutorial-3-advanced-output-organization",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#tutorial-4-custom-template-development",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#tutorial-5-automated-testing-workflow",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#tutorial-6-performance-optimization",
+      "type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#tutorial-7-troubleshooting-common-issues",
+      "type": "anchor"
+    },
+    {
+      "url": "https://www.sphinx-doc.org/",
+      "type": "external"
+    }
+  ]
+}

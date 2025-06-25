@@ -1,0 +1,820 @@
+{
+  "total_links": 101,
+  "reachable_links": 99,
+  "unreachable_links": 2,
+  "internal_links": 27,
+  "external_links": 4,
+  "anchor_links": 70,
+  "resource_links": 0,
+  "test_duration": 12.783287048339844,
+  "results": [
+    {
+      "url": "https://github.com/pradyunsg/furo",
+      "status_code": 200,
+      "response_time": 0.6328260898590088,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "external"
+    },
+    {
+      "url": "https://github.com/thsetz/Bewerbung",
+      "status_code": 200,
+      "response_time": 0.5765230655670166,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "external"
+    },
+    {
+      "url": "https://github.com/thsetz/Bewerbung/blob/main/docs/index.rst?plain=true",
+      "status_code": 404,
+      "response_time": 0.036520957946777344,
+      "error_message": "",
+      "is_reachable": false,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://github.com/thsetz/Bewerbung/edit/main/docs/index.rst",
+      "status_code": 200,
+      "response_time": 0.37242698669433594,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://pradyunsg.me",
+      "status_code": 200,
+      "response_time": 0.22999978065490723,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "external"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/_static/ai-provider-selection.html",
+      "status_code": 200,
+      "response_time": 0.13526391983032227,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/_static/coverage/index.html",
+      "status_code": 404,
+      "response_time": 0.022194862365722656,
+      "error_message": "",
+      "is_reachable": false,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/_static/system-workflow.html",
+      "status_code": 200,
+      "response_time": 0.1274099349975586,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/ai_client_factory.html",
+      "status_code": 200,
+      "response_time": 0.13335108757019043,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/ai_content_generator.html",
+      "status_code": 200,
+      "response_time": 0.1506359577178955,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/base_ai_client.html",
+      "status_code": 200,
+      "response_time": 0.11860299110412598,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/bewerbung_generator.html",
+      "status_code": 200,
+      "response_time": 0.12188220024108887,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/claude_api_client.html",
+      "status_code": 200,
+      "response_time": 0.12623310089111328,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/content_variants_analyzer.html",
+      "status_code": 200,
+      "response_time": 0.12604904174804688,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/documentation_generator.html",
+      "status_code": 200,
+      "response_time": 0.12947583198547363,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/llama_api_client.html",
+      "status_code": 200,
+      "response_time": 0.13007092475891113,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/_autosummary/template_manager.html",
+      "status_code": 200,
+      "response_time": 0.12696099281311035,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/ai_client_factory.html",
+      "status_code": 200,
+      "response_time": 0.14190006256103516,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/base_ai_client.html",
+      "status_code": 200,
+      "response_time": 0.12148785591125488,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/bewerbung_generator.html",
+      "status_code": 200,
+      "response_time": 0.12889480590820312,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/modules.html",
+      "status_code": 200,
+      "response_time": 0.12977910041809082,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/modules.html#ai-clients",
+      "status_code": 200,
+      "response_time": 0.02224111557006836,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/modules.html#analysis-and-testing",
+      "status_code": 200,
+      "response_time": 0.02243781089782715,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/modules.html#core-modules",
+      "status_code": 200,
+      "response_time": 0.023288965225219727,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/modules.html#module-index",
+      "status_code": 200,
+      "response_time": 0.022825956344604492,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/api/modules.html#utilities",
+      "status_code": 200,
+      "response_time": 0.022558927536010742,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html",
+      "status_code": 200,
+      "response_time": 0.12921619415283203,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#configuration-management",
+      "status_code": 200,
+      "response_time": 0.023744821548461914,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#core-components",
+      "status_code": 200,
+      "response_time": 0.023252010345458984,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#data-flow",
+      "status_code": 200,
+      "response_time": 0.021951913833618164,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#design-patterns",
+      "status_code": 200,
+      "response_time": 0.02293992042541504,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#error-handling-strategy",
+      "status_code": 200,
+      "response_time": 0.022396087646484375,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#future-architecture-enhancements",
+      "status_code": 200,
+      "response_time": 0.024451017379760742,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#high-level-architecture",
+      "status_code": 200,
+      "response_time": 0.022788047790527344,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#module-dependencies",
+      "status_code": 200,
+      "response_time": 0.023733854293823242,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#performance-considerations",
+      "status_code": 200,
+      "response_time": 0.02295207977294922,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#security-considerations",
+      "status_code": 200,
+      "response_time": 0.022485017776489258,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#system-overview",
+      "status_code": 200,
+      "response_time": 0.0229952335357666,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/development/architecture.html#testing-strategy",
+      "status_code": 200,
+      "response_time": 0.022896289825439453,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/genindex.html",
+      "status_code": 200,
+      "response_time": 0.12767791748046875,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#",
+      "status_code": 200,
+      "response_time": 0.024055004119873047,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#ai-provider-selection",
+      "status_code": 200,
+      "response_time": 0.02267599105834961,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#architecture-overview",
+      "status_code": 200,
+      "response_time": 0.02304387092590332,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#bewerbung-generator-documentation",
+      "status_code": 200,
+      "response_time": 0.023134946823120117,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#features",
+      "status_code": 200,
+      "response_time": 0.022716045379638672,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#furo-main-content",
+      "status_code": 200,
+      "response_time": 0.02171182632446289,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#indices-and-tables",
+      "status_code": 200,
+      "response_time": 0.022780895233154297,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#quick-start",
+      "status_code": 200,
+      "response_time": 0.022760868072509766,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#supported-ai-providers",
+      "status_code": 200,
+      "response_time": 0.022663116455078125,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/index.html#system-workflow",
+      "status_code": 200,
+      "response_time": 0.022485971450805664,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/py-modindex.html",
+      "status_code": 200,
+      "response_time": 0.12613296508789062,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/search.html",
+      "status_code": 200,
+      "response_time": 0.1248018741607666,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html",
+      "status_code": 200,
+      "response_time": 0.12422871589660645,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#ci-cd-integration",
+      "status_code": 200,
+      "response_time": 0.02246403694152832,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#coverage-best-practices",
+      "status_code": 200,
+      "response_time": 0.022897005081176758,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#coverage-configuration",
+      "status_code": 200,
+      "response_time": 0.02201104164123535,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#coverage-overview",
+      "status_code": 200,
+      "response_time": 0.021815061569213867,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#coverage-targets-by-module",
+      "status_code": 200,
+      "response_time": 0.021958112716674805,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#current-coverage-status",
+      "status_code": 200,
+      "response_time": 0.02272486686706543,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#improving-coverage",
+      "status_code": 200,
+      "response_time": 0.021596908569335938,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#related-resources",
+      "status_code": 200,
+      "response_time": 0.022231101989746094,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#running-coverage-tests",
+      "status_code": 200,
+      "response_time": 0.022459983825683594,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/testing/coverage.html#understanding-coverage-reports",
+      "status_code": 200,
+      "response_time": 0.02226710319519043,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html",
+      "status_code": 200,
+      "response_time": 0.13286304473876953,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#advanced-configuration",
+      "status_code": 200,
+      "response_time": 0.023923873901367188,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#ai-provider-settings",
+      "status_code": 200,
+      "response_time": 0.02350783348083496,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#configuration-validation",
+      "status_code": 200,
+      "response_time": 0.02400517463684082,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#environment-file-examples",
+      "status_code": 200,
+      "response_time": 0.02228713035583496,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#environment-variables",
+      "status_code": 200,
+      "response_time": 0.023746967315673828,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#file-organization-patterns",
+      "status_code": 200,
+      "response_time": 0.023440122604370117,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#logging-configuration",
+      "status_code": 200,
+      "response_time": 0.022736072540283203,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/configuration.html#template-configuration",
+      "status_code": 200,
+      "response_time": 0.024420976638793945,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html",
+      "status_code": 200,
+      "response_time": 0.13617801666259766,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html#ai-provider-setup",
+      "status_code": 200,
+      "response_time": 0.02298116683959961,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html#installation-steps",
+      "status_code": 200,
+      "response_time": 0.025677919387817383,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html#next-steps",
+      "status_code": 200,
+      "response_time": 0.02149200439453125,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html#quick-setup-script",
+      "status_code": 200,
+      "response_time": 0.024084091186523438,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html#requirements",
+      "status_code": 200,
+      "response_time": 0.022058963775634766,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html#system-dependencies",
+      "status_code": 200,
+      "response_time": 0.02343606948852539,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/installation.html#troubleshooting",
+      "status_code": 200,
+      "response_time": 0.0223388671875,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html",
+      "status_code": 200,
+      "response_time": 0.12900686264038086,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#advanced-generation-options",
+      "status_code": 200,
+      "response_time": 0.023037195205688477,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#common-issues",
+      "status_code": 200,
+      "response_time": 0.021952152252197266,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#next-steps",
+      "status_code": 200,
+      "response_time": 0.021701335906982422,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#prerequisites",
+      "status_code": 200,
+      "response_time": 0.022140979766845703,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#regeneration-scripts",
+      "status_code": 200,
+      "response_time": 0.022093772888183594,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#testing-your-setup",
+      "status_code": 200,
+      "response_time": 0.021374940872192383,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#understanding-generated-content",
+      "status_code": 200,
+      "response_time": 0.0219879150390625,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#understanding-the-output-structure",
+      "status_code": 200,
+      "response_time": 0.021992921829223633,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#using-different-ai-providers",
+      "status_code": 200,
+      "response_time": 0.023022890090942383,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/quickstart.html#your-first-application",
+      "status_code": 200,
+      "response_time": 0.02248406410217285,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html",
+      "status_code": 200,
+      "response_time": 0.12368583679199219,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "internal"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#next-steps",
+      "status_code": 200,
+      "response_time": 0.023866891860961914,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#tutorial-1-basic-application-generation",
+      "status_code": 200,
+      "response_time": 0.023247957229614258,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#tutorial-2-comparing-ai-providers",
+      "status_code": 200,
+      "response_time": 0.021312713623046875,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#tutorial-3-advanced-output-organization",
+      "status_code": 200,
+      "response_time": 0.0225217342376709,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#tutorial-4-custom-template-development",
+      "status_code": 200,
+      "response_time": 0.022742033004760742,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#tutorial-5-automated-testing-workflow",
+      "status_code": 200,
+      "response_time": 0.023469209671020508,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#tutorial-6-performance-optimization",
+      "status_code": 200,
+      "response_time": 0.0240781307220459,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://thsetz.github.io/Bewerbung/user_guide/tutorials.html#tutorial-7-troubleshooting-common-issues",
+      "status_code": 200,
+      "response_time": 0.02247905731201172,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "anchor"
+    },
+    {
+      "url": "https://www.sphinx-doc.org/",
+      "status_code": 200,
+      "response_time": 1.6641089916229248,
+      "error_message": "",
+      "is_reachable": true,
+      "link_type": "external"
+    }
+  ]
+}
