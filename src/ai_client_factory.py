@@ -149,17 +149,23 @@ class AIClientFactory:
         """
         clients = []
         
-        # Try Llama client
-        llama_client = self._try_llama_client(use_cache)
-        if llama_client and llama_client.is_available():
-            clients.append(llama_client)
-            print(f"🦙 Llama client available ({llama_client.get_model_name()})")
+        # Try Llama client with graceful failure handling
+        try:
+            llama_client = self._try_llama_client(use_cache)
+            if llama_client and llama_client.is_available():
+                clients.append(llama_client)
+                print(f"🦙 Llama client available ({llama_client.get_model_name()})")
+        except Exception as e:
+            print(f"⚠️  Failed to initialize Llama client: {e}")
         
-        # Try Claude client
-        claude_client = self._try_claude_client(use_cache)
-        if claude_client and claude_client.is_available():
-            clients.append(claude_client)
-            print(f"🤖 Claude client available ({claude_client.get_model_name()})")
+        # Try Claude client with graceful failure handling
+        try:
+            claude_client = self._try_claude_client(use_cache)
+            if claude_client and claude_client.is_available():
+                clients.append(claude_client)
+                print(f"🤖 Claude client available ({claude_client.get_model_name()})")
+        except Exception as e:
+            print(f"⚠️  Failed to initialize Claude client: {e}")
         
         # Always include sample client as fallback
         sample_client = self._get_fallback_client(use_cache)

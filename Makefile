@@ -1,6 +1,6 @@
 # Makefile for Bewerbung Generator
 
-.PHONY: test_1 test_2 test_3 test_4 test install clean venv generate variants variants-detailed docs docs-pdf docs-clean docs-serve docs-check docs-all clear-cache generate-fresh generate-cached cache-status
+.PHONY: test_1 test_2 test_3 test_4 test test_memory test-coverage coverage-report coverage-xml coverage-clean install clean venv generate variants variants-detailed docs docs-pdf docs-clean docs-serve docs-check docs-all clear-cache generate-fresh generate-cached cache-status
 
 # Create virtual environment if it doesn't exist
 venv:
@@ -54,6 +54,54 @@ test: venv
 	else \
 		python -m pytest tests/ -v; \
 	fi
+
+# Test memory usage stability
+test_memory: venv
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		echo "Activating virtual environment..."; \
+		. .venv/bin/activate && python -m pytest tests/test_performance_requirements.py::TestPerformanceRequirements::test_memory_usage_stability -v; \
+	else \
+		python -m pytest tests/test_performance_requirements.py::TestPerformanceRequirements::test_memory_usage_stability -v; \
+	fi
+
+# Run tests with coverage collection
+test-coverage: venv
+	@echo "🧪 Running tests with coverage collection..."
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		. .venv/bin/activate && python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=html --cov-report=xml -v; \
+	else \
+		python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=html --cov-report=xml -v; \
+	fi
+	@echo "📊 Coverage reports generated:"
+	@echo "  - HTML: docs/_static/coverage/index.html"
+	@echo "  - XML: coverage.xml"
+
+# Generate HTML coverage report only
+coverage-report: venv
+	@echo "📊 Generating HTML coverage report..."
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		. .venv/bin/activate && coverage html; \
+	else \
+		coverage html; \
+	fi
+	@echo "✅ HTML coverage report: docs/_static/coverage/index.html"
+
+# Generate XML coverage report for CI/CD
+coverage-xml: venv
+	@echo "📄 Generating XML coverage report..."
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		. .venv/bin/activate && coverage xml; \
+	else \
+		coverage xml; \
+	fi
+	@echo "✅ XML coverage report: coverage.xml"
+
+# Clean coverage data files
+coverage-clean:
+	@echo "🗑️ Cleaning coverage data files..."
+	@rm -f .coverage coverage.xml
+	@rm -rf docs/_static/coverage/
+	@echo "✅ Coverage files cleaned"
 
 # Install dependencies
 install: venv

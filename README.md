@@ -186,16 +186,33 @@ make generate
 
 ## 📖 Documentation
 
+### User Documentation
 - **[📚 Full Documentation](docs/_build/html/index.html)** - Complete user guide and API reference
 - **[🚀 Quick Start Guide](docs/user_guide/quickstart.rst)** - Get started in minutes  
 - **[⚙️ Configuration](docs/user_guide/configuration.rst)** - Customize your setup
 - **[🏗️ Architecture](docs/development/architecture.rst)** - System design and components
 
+### Project Requirements
+- **[📋 Project Requirements](project_requirements/project_requirements.md)** - Complete formal requirements specification
+  - 25 Functional Requirements (FR-1.x through FR-5.x)
+  - 20+ Non-Functional Requirements (Performance, Security, Usability, etc.)
+  - Acceptance criteria and test specifications
+  - Stakeholder definitions and success metrics
+
 ## 🧪 Testing & Validation
+
+### Comprehensive Test Suite
+The project includes extensive testing aligned with formal requirements:
 
 ```bash
 # Run all tests
 make test
+
+# Run specific test categories
+pytest tests/test_workflow_requirements.py          # FR-1.1, FR-1.2 (7-step workflow)
+pytest tests/test_multi_provider_integration.py     # FR-2.1, FR-2.2 (AI providers)
+pytest tests/test_directory_structure_requirements.py # FR-3.1 (directory structure)
+pytest tests/test_performance_requirements.py -m performance # NFR-Perf-1 to NFR-Perf-4
 
 # Test AI providers
 make test-providers
@@ -206,4 +223,39 @@ make test-regeneration
 # Analyze content variants
 make variants
 ```
+
+### Test Coverage
+
+Run tests with coverage reporting:
+
+```bash
+# Run all tests with coverage collection
+make test-coverage
+
+# Generate HTML coverage report only
+make coverage-report
+
+# Generate XML coverage for CI/CD
+make coverage-xml
+
+# Clean coverage data
+make coverage-clean
+```
+
+**Coverage Overview:**
+- **Current Coverage**: 41% (target: 75%)
+- **HTML Reports**: `docs/_static/coverage/index.html`
+- **Documentation**: [Coverage Reports](docs/_build/html/testing/coverage.html)
+
+**Test Categories:**
+- **Functional Requirements**: Complete 7-step workflow, multi-provider AI support, directory structure
+- **Performance Requirements**: <30s generation, 100+ apps/day, <10s AI generation, <5s PDF conversion
+- **Reliability Requirements**: Graceful provider failure handling and fallback mechanisms
+- **Integration Tests**: End-to-end workflow validation with real and mocked providers
+
+### Performance Targets
+- **Generation Time**: Complete application generation in <30 seconds (NFR-Perf-1)
+- **Throughput**: Support 100+ applications per day (NFR-Perf-2) 
+- **AI Generation**: AI content generation in <10 seconds (NFR-Perf-3)
+- **PDF Conversion**: PDF conversion in <5 seconds (NFR-Perf-4)
 

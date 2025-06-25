@@ -5,6 +5,9 @@ weasyprint>=59.0
 python-dotenv>=1.0.0
 anthropic>=0.40.0
 requests>=2.31.0  # For Ollama API communication
+psutil>=5.9.0  # For memory usage monitoring in tests
+coverage[toml]>=7.0.0  # Test coverage reporting
+pytest-cov>=4.0.0  # Pytest coverage plugin
 
 # Documentation dependencies
 sphinx>=7.0.0

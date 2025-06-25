@@ -79,6 +79,12 @@ AI Provider Selection
    development/testing
    development/contributing
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Testing & Quality
+   
+   testing/coverage.md
+
 Features
 --------
 
@@ -96,6 +102,9 @@ Features
 
 📊 **Content Variants Analysis**
    Compare AI-generated content across different providers
+
+🧪 **Comprehensive Test Coverage**
+   `View Coverage Reports <_static/coverage/index.html>`_ - Track code quality with detailed test coverage analysis
 
 🗃️ **Structured Logging**
    Detailed logs for each generation process

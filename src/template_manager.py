@@ -12,10 +12,11 @@ import re
 
 
 class TemplateManager:
-    def __init__(self, base_dir: str = "."):
+    def __init__(self, base_dir: str = ".", env_override: Optional[Dict[str, str]] = None):
         self.base_dir = Path(base_dir)
         self.template_dir = self.base_dir / "Ausgabe" / "templates"
         self.env_file = self.base_dir / ".env"
+        self.env_override = env_override or {}
         
         # Load environment variables
         load_dotenv(self.env_file)
@@ -34,7 +35,7 @@ class TemplateManager:
         """
         variables = {}
         
-        # Load all environment variables and keep them uppercase
+        # Start with environment variables
         for key, value in os.environ.items():
             if (key.startswith('ABSENDER_') or 
                 key.startswith('ADRESSAT_') or 
@@ -44,6 +45,9 @@ class TemplateManager:
                         'STELLE', 'STELLEN_ID']):
                 # Keep uppercase for global .env variables
                 variables[key] = value
+        
+        # Override with test data if provided (for testing)
+        variables.update(self.env_override)
         
         return variables
     
