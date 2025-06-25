@@ -87,7 +87,9 @@ html_theme_options = {
 
 # Custom CSS and JS files
 html_css_files = []
-html_js_files = []
+html_js_files = [
+    "https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js",
+]
 
 # -- Options for autodoc ----------------------------------------------------
 
@@ -170,13 +172,16 @@ sys.path.insert(0, '../src')
 # -- Options for Mermaid ----------------------------------------------------
 
 mermaid_version = "10.6.1"
+mermaid_output_format = "raw"
 mermaid_init_js = """
 mermaid.initialize({
     startOnLoad: true,
     theme: 'default',
+    securityLevel: 'loose',
+    htmlLabels: false,
     flowchart: {
         curve: 'basis',
-        htmlLabels: true
+        htmlLabels: false
     },
     sequence: {
         actorMargin: 50,
@@ -184,6 +189,11 @@ mermaid.initialize({
     }
 });
 """
+
+# Disable HTML encoding in Mermaid diagrams
+mermaid_cmd = 'mmdc'
+mermaid_cmd_shell = True
+mermaid_verbose = True
 
 # -- Options for OpenGraph --------------------------------------------------
 
