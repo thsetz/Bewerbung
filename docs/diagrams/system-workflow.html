@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Workflow - Bewerbung Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #ffffff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .diagram-container {
+            text-align: center;
+            margin: 20px 0;
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .description {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #0366d6;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        @media (prefers-color-scheme: dark) {
+            body { background-color: #0d1117; color: #c9d1d9; }
+            h1 { color: #f0f6fc; }
+            .diagram-container { background: #161b22; }
+            .description { background: #21262d; border-color: #30363d; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../README.md" class="back-link">← Back to README</a>
+        
+        <h1>🔄 System Workflow</h1>
+        
+        <div class="description">
+            <h3>7-Step Application Generation Process</h3>
+            <p>This diagram illustrates the complete workflow for generating job application documents, from initial cache clearing through final PDF conversion.</p>
+        </div>
+        
+        <div class="diagram-container">
+            <pre class="mermaid">
+flowchart TD
+    A0["🗑️ Step 0: Clear AI Cache"] --> A["📁 Step 1: Read Profile"]
+    A --> B["📄 Step 2: Read Job Description"]
+    B --> C["📂 Step 3: Create Output Directory"]
+    C --> D["🤖 Step 4: Generate AI Content"]
+    D --> E["📁 Step 5: Create PDF Directory"]
+    E --> F["📄 Step 6: Convert to PDF"]
+    
+    A01[".cache/ai_content_cache.json<br/>Clear for fresh content"] --> A0
+    A1["profil/YYYYMMDD_*.pdf<br/>Newest file"] --> A
+    B1["Stellenbeschreibung/YYYYMMDD_*.txt<br/>Newest file"] --> B
+    C1["Ausgabe/DATE_job-DATE_profile/"] --> C
+    D1["AI Provider Chain:<br/>Llama → Claude → Sample<br/>Fresh content, no cache"] --> D
+    E1["Create /pdf subdirectory"] --> E
+    F1["Markdown → HTML → PDF"] --> F
+    
+    F --> G["✅ Complete Application Package"]
+    
+    style A0 fill:#ffebee
+    style A fill:#e1f5fe
+    style B fill:#e8f5e8
+    style C fill:#fff3e0
+    style D fill:#fce4ec
+    style E fill:#f3e5f5
+    style F fill:#e0f2f1
+    style G fill:#e8f5e8,stroke:#4caf50,stroke-width:3px
+            </pre>
+        </div>
+        
+        <div class="description">
+            <h4>Process Details:</h4>
+            <ul>
+                <li><strong>Step 0:</strong> Clear AI content cache for fresh generation</li>
+                <li><strong>Step 1:</strong> Read newest profile from profil/ directory</li>
+                <li><strong>Step 2:</strong> Read newest job description from Stellenbeschreibung/</li>
+                <li><strong>Step 3:</strong> Create structured output directory</li>
+                <li><strong>Step 4:</strong> Generate content using AI provider chain</li>
+                <li><strong>Step 5:</strong> Create PDF subdirectory structure</li>
+                <li><strong>Step 6:</strong> Convert documents to PDF format</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            htmlLabels: false,
+            flowchart: {
+                curve: 'basis',
+                htmlLabels: false
+            }
+        });
+    </script>
+</body>
+</html>

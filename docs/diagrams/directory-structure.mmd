@@ -1,0 +1,10 @@
+flowchart TD
+    Config[OUTPUT_STRUCTURE="by_model"] --> Structure["🗂️ Directory-Only Structure"]
+    
+    Structure --> Output["Ausgabe/job-profile/<br/>├── sample_content/<br/>│   ├── anschreiben.md<br/>│   ├── lebenslauf.md<br/>│   ├── README.md<br/>│   └── pdf/<br/>├── claude_sonnet_3_5/<br/>│   ├── anschreiben.md<br/>│   ├── lebenslauf.md<br/>│   └── pdf/<br/>└── llama_3_1_8b/<br/>    ├── anschreiben.md<br/>    └── pdf/"]
+    
+    Structure --> Benefits["✅ Benefits<br/>• No root files<br/>• Clean separation<br/>• Easy comparison<br/>• Provider-specific docs"]
+    
+    style Structure fill:#e8f5e8
+    style Output fill:#f3e5f5
+    style Benefits fill:#e1f5fe

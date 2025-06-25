@@ -6,76 +6,16 @@ Welcome to the Bewerbung Generator documentation! This tool generates profession
 System Workflow
 ---------------
 
-.. raw:: html
+📊 **Interactive Diagram:** See diagrams/system-workflow.html
 
-   <pre class="mermaid">
-   flowchart TD
-       A0["🗑️ Step 0: Clear AI Cache"] --> A["📁 Step 1: Read Profile"]
-       A --> B["📄 Step 2: Read Job Description"]
-       B --> C["📂 Step 3: Create Output Directory"]
-       C --> D["🤖 Step 4: Generate AI Content"]
-       D --> E["📁 Step 5: Create PDF Directory"]
-       E --> F["📄 Step 6: Convert to PDF"]
-       
-       A01[".cache/ai_content_cache.json<br/>Clear for fresh content"] --> A0
-       A1["profil/YYYYMMDD_*.pdf<br/>Newest file"] --> A
-       B1["Stellenbeschreibung/YYYYMMDD_*.txt<br/>Newest file"] --> B
-       C1["Ausgabe/DATE_job-DATE_profile/"] --> C
-       D1["AI Provider Chain:<br/>Llama → Claude → Sample<br/>Fresh content, no cache"] --> D
-       E1["Create /pdf subdirectory"] --> E
-       F1["Markdown → HTML → PDF"] --> F
-       
-       F --> G["✅ Complete Application Package"]
-       
-       style A0 fill:#ffebee
-       style A fill:#e1f5fe
-       style B fill:#e8f5e8
-       style C fill:#fff3e0
-       style D fill:#fce4ec
-       style E fill:#f3e5f5
-       style F fill:#e0f2f1
-       style G fill:#e8f5e8,stroke:#4caf50,stroke-width:3px
-   </pre>
+The application generation follows a structured 7-step process from cache clearing through PDF conversion.
 
 AI Provider Selection
 ---------------------
 
-.. raw:: html
+📊 **Interactive Diagram:** See diagrams/ai-provider-selection.html
 
-   <pre class="mermaid">
-   flowchart LR
-       Start(["Content Request"]) --> Check1{"Llama/Ollama<br/>Available?"}
-       Check1 -->|"✅ Yes"| Llama["🦙 Llama/Ollama<br/>Local & Private"]
-       Check1 -->|"❌ No"| Check2{"Claude API<br/>Available?"}
-       Check2 -->|"✅ Yes"| Claude["🧠 Claude API<br/>High Quality"]
-       Check2 -->|"❌ No"| Sample["📝 Sample Content<br/>Always Available"]
-       
-       Llama --> Success["✅ Generated Content"]
-       Claude --> Success
-       Sample --> Success
-       
-       style Llama fill:#e3f2fd
-       style Claude fill:#f3e5f5
-       style Sample fill:#fff3e0
-       style Success fill:#e8f5e8
-   </pre>
-
-.. raw:: html
-
-   <script>
-   if (typeof mermaid !== 'undefined') {
-       mermaid.initialize({
-           startOnLoad: true,
-           theme: 'default',
-           securityLevel: 'loose',
-           htmlLabels: false,
-           flowchart: {
-               curve: 'basis',
-               htmlLabels: false
-           }
-       });
-   }
-   </script>
+The system uses intelligent multi-provider fallback with automatic provider switching for reliable content generation.
 
 .. toctree::
    :maxdepth: 2

@@ -34,34 +34,7 @@ A complete application (Bewerbung) consists of:
 
 The application generation follows a structured 7-step process:
 
-```mermaid
-flowchart TD
-    A0[🗑️ Step 0: Clear AI Cache] --> A[📁 Step 1: Read Profile]
-    A --> B[📄 Step 2: Read Job Description]
-    B --> C[📂 Step 3: Create Output Directory]
-    C --> D[🤖 Step 4: Generate AI Content]
-    D --> E[📁 Step 5: Create PDF Directory]
-    E --> F[📄 Step 6: Convert to PDF]
-    
-    A01[.cache/ai_content_cache.json<br/>→ Clear for fresh content] --> A0
-    A1[profil/YYYYMMDD_*.pdf<br/>→ Newest file] --> A
-    B1[Stellenbeschreibung/YYYYMMDD_*.txt<br/>→ Newest file] --> B
-    C1[Ausgabe/DATE_job-DATE_profile/] --> C
-    D1[AI Provider Chain:<br/>Llama → Claude → Sample<br/>(Fresh content, no cache)] --> D
-    E1[Create /pdf subdirectory] --> E
-    F1[Markdown → HTML → PDF] --> F
-    
-    F --> G[✅ Complete Application Package]
-    
-    style A0 fill:#ffebee
-    style A fill:#e1f5fe
-    style B fill:#e8f5e8
-    style C fill:#fff3e0
-    style D fill:#fce4ec
-    style E fill:#f3e5f5
-    style F fill:#e0f2f1
-    style G fill:#e8f5e8,stroke:#4caf50,stroke-width:3px
-```
+📊 **[🔗 View Interactive System Workflow Diagram →](docs/diagrams/system-workflow.html)**
 
 ### Detailed Steps
 
@@ -78,40 +51,13 @@ flowchart TD
 
 ## 🤖 AI Provider Support
 
-```mermaid
-flowchart LR
-    Start([Content Request]) --> Check1{Llama/Ollama<br/>Available?}
-    Check1 -->|✅ Yes| Llama[🦙 Llama/Ollama<br/>Local & Private]
-    Check1 -->|❌ No| Check2{Claude API<br/>Available?}
-    Check2 -->|✅ Yes| Claude[🧠 Claude API<br/>High Quality]
-    Check2 -->|❌ No| Sample[📝 Sample Content<br/>Always Available]
-    
-    Llama --> Success[✅ Generated Content]
-    Claude --> Success
-    Sample --> Success
-    
-    style Llama fill:#e3f2fd
-    style Claude fill:#f3e5f5
-    style Sample fill:#fff3e0
-    style Success fill:#e8f5e8
-```
+📊 **[🔗 View AI Provider Selection Diagram →](docs/diagrams/ai-provider-selection.html)**
 
 ## 🏗️ Directory-Only Output Structure
 
 The generator uses a **clean directory-only structure** for organized output:
 
-```mermaid
-flowchart TD
-    Config[OUTPUT_STRUCTURE="by_model"] --> Structure[🗂️ Directory-Only Structure]
-    
-    Structure --> Output[Ausgabe/job-profile/<br/>├── sample_content/<br/>│   ├── anschreiben.md<br/>│   ├── lebenslauf.md<br/>│   ├── README.md<br/>│   └── pdf/<br/>├── claude_sonnet_3_5/<br/>│   ├── anschreiben.md<br/>│   ├── lebenslauf.md<br/>│   └── pdf/<br/>└── llama_3_1_8b/<br/>    ├── anschreiben.md<br/>    └── pdf/]
-    
-    Structure --> Benefits[✅ Benefits<br/>• No root files<br/>• Clean separation<br/>• Easy comparison<br/>• Provider-specific docs]
-    
-    style Structure fill:#e8f5e8
-    style Output fill:#f3e5f5
-    style Benefits fill:#e1f5fe
-```
+📊 **[🔗 View Directory Structure Diagram →](docs/diagrams/directory-structure.html)**
 
 **Key Features:**
 - **No Root Files**: All documents are contained within AI provider subdirectories

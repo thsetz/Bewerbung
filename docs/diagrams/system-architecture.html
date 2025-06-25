@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Architecture - Bewerbung Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #ffffff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .diagram-container {
+            text-align: center;
+            margin: 20px 0;
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .description {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #0366d6;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        @media (prefers-color-scheme: dark) {
+            body { background-color: #0d1117; color: #c9d1d9; }
+            h1 { color: #f0f6fc; }
+            .diagram-container { background: #161b22; }
+            .description { background: #21262d; border-color: #30363d; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../development/architecture.html" class="back-link">← Back to Architecture Documentation</a>
+        
+        <h1>🏗️ System Architecture</h1>
+        
+        <div class="description">
+            <h3>High-Level Component Overview</h3>
+            <p>This diagram shows the modular architecture with clear separation of concerns across CLI interface, core components, AI providers, and analysis tools.</p>
+        </div>
+        
+        <div class="diagram-container">
+            <pre class="mermaid">
+graph TB
+    subgraph "🖥️ CLI Interface"
+        CLI[Makefile Targets]
+    end
+    
+    subgraph "🎯 Main Controller" 
+        BG[BewerbungGenerator]
+    end
+    
+    subgraph "🔧 Core Components"
+        ACF[AI Client Factory]
+        TM[Template Manager]
+        DG[Document Generator]
+    end
+    
+    subgraph "🤖 AI Providers"
+        CAC[Claude API Client]
+        LAC[Llama/Ollama Client]  
+        SC[Sample Content]
+    end
+    
+    subgraph "📊 Analysis Tools"
+        CA[Content Analysis]
+        RT[Regeneration Testing]
+        VA[Variants Analyzer]
+    end
+    
+    CLI --> BG
+    BG --> ACF
+    BG --> TM
+    BG --> DG
+    
+    ACF --> CAC
+    ACF --> LAC
+    ACF --> SC
+    
+    BG --> CA
+    BG --> RT
+    BG --> VA
+    
+    style CLI fill:#e1f5fe
+    style BG fill:#e8f5e8
+    style ACF fill:#fff3e0
+    style TM fill:#fff3e0
+    style DG fill:#fff3e0
+    style CAC fill:#f3e5f5
+    style LAC fill:#f3e5f5
+    style SC fill:#f3e5f5
+    style CA fill:#fce4ec
+    style RT fill:#fce4ec
+    style VA fill:#fce4ec
+            </pre>
+        </div>
+        
+        <div class="description">
+            <h4>Component Layers:</h4>
+            
+            <h5>🖥️ CLI Interface</h5>
+            <ul>
+                <li><strong>Makefile Targets:</strong> User-facing commands for generation, testing, and analysis</li>
+            </ul>
+            
+            <h5>🎯 Main Controller</h5>
+            <ul>
+                <li><strong>BewerbungGenerator:</strong> Orchestrates the entire application generation process</li>
+            </ul>
+            
+            <h5>🔧 Core Components</h5>
+            <ul>
+                <li><strong>AI Client Factory:</strong> Manages AI provider selection and fallback logic</li>
+                <li><strong>Template Manager:</strong> Handles Jinja2 template processing and variable substitution</li>
+                <li><strong>Document Generator:</strong> Converts templates to final documents and PDFs</li>
+            </ul>
+            
+            <h5>🤖 AI Providers</h5>
+            <ul>
+                <li><strong>Claude API Client:</strong> Integration with Anthropic's Claude API</li>
+                <li><strong>Llama/Ollama Client:</strong> Local AI model integration for privacy</li>
+                <li><strong>Sample Content:</strong> Fallback static content provider</li>
+            </ul>
+            
+            <h5>📊 Analysis Tools</h5>
+            <ul>
+                <li><strong>Content Analysis:</strong> Quality assessment and content comparison</li>
+                <li><strong>Regeneration Testing:</strong> Validates reproducibility of generated content</li>
+                <li><strong>Variants Analyzer:</strong> Compares outputs across different AI providers</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            htmlLabels: false,
+            flowchart: {
+                curve: 'basis',
+                htmlLabels: false
+            }
+        });
+    </script>
+</body>
+</html>

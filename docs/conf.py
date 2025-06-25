@@ -39,7 +39,7 @@ extensions = [
     'myst_parser',                  # Markdown support
     'sphinx_copybutton',            # Copy button for code blocks
     'sphinxext.opengraph',          # Enhanced GitHub integration
-    'sphinxcontrib.mermaid',        # Mermaid diagram support
+    # 'sphinxcontrib.mermaid',        # Mermaid diagram support - disabled
 ]
 
 # Add support for Markdown files

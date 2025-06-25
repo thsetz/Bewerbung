@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Provider Selection - Bewerbung Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #ffffff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .diagram-container {
+            text-align: center;
+            margin: 20px 0;
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .description {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #0366d6;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        @media (prefers-color-scheme: dark) {
+            body { background-color: #0d1117; color: #c9d1d9; }
+            h1 { color: #f0f6fc; }
+            .diagram-container { background: #161b22; }
+            .description { background: #21262d; border-color: #30363d; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../README.md" class="back-link">← Back to README</a>
+        
+        <h1>🤖 AI Provider Selection</h1>
+        
+        <div class="description">
+            <h3>Multi-Provider Fallback Chain</h3>
+            <p>This diagram shows the intelligent provider selection mechanism with automatic fallback to ensure content generation always succeeds.</p>
+        </div>
+        
+        <div class="diagram-container">
+            <pre class="mermaid">
+flowchart LR
+    Start(["Content Request"]) --> Check1{"Llama/Ollama<br/>Available?"}
+    Check1 -->|"✅ Yes"| Llama["🦙 Llama/Ollama<br/>Local & Private"]
+    Check1 -->|"❌ No"| Check2{"Claude API<br/>Available?"}
+    Check2 -->|"✅ Yes"| Claude["🧠 Claude API<br/>High Quality"]
+    Check2 -->|"❌ No"| Sample["📝 Sample Content<br/>Always Available"]
+    
+    Llama --> Success["✅ Generated Content"]
+    Claude --> Success
+    Sample --> Success
+    
+    style Llama fill:#e3f2fd
+    style Claude fill:#f3e5f5
+    style Sample fill:#fff3e0
+    style Success fill:#e8f5e8
+            </pre>
+        </div>
+        
+        <div class="description">
+            <h4>Provider Priority:</h4>
+            <ol>
+                <li><strong>🦙 Llama/Ollama:</strong> Local AI models (preferred for privacy)</li>
+                <li><strong>🧠 Claude API:</strong> High-quality cloud AI (fallback option)</li>
+                <li><strong>📝 Sample Content:</strong> Static templates (always available)</li>
+            </ol>
+            
+            <h4>Benefits:</h4>
+            <ul>
+                <li><strong>Privacy First:</strong> Prioritizes local AI models</li>
+                <li><strong>High Quality:</strong> Falls back to premium cloud AI</li>
+                <li><strong>Always Available:</strong> Guaranteed content generation</li>
+                <li><strong>Graceful Degradation:</strong> Automatic provider switching</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            htmlLabels: false,
+            flowchart: {
+                curve: 'basis',
+                htmlLabels: false
+            }
+        });
+    </script>
+</body>
+</html>

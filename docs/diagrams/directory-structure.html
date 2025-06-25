@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directory Structure - Bewerbung Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #ffffff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .diagram-container {
+            text-align: center;
+            margin: 20px 0;
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .description {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #0366d6;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        @media (prefers-color-scheme: dark) {
+            body { background-color: #0d1117; color: #c9d1d9; }
+            h1 { color: #f0f6fc; }
+            .diagram-container { background: #161b22; }
+            .description { background: #21262d; border-color: #30363d; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../README.md" class="back-link">← Back to README</a>
+        
+        <h1>🏗️ Directory-Only Output Structure</h1>
+        
+        <div class="description">
+            <h3>Clean Directory Organization</h3>
+            <p>The generator uses a clean directory-only structure for organized output with AI provider separation.</p>
+        </div>
+        
+        <div class="diagram-container">
+            <pre class="mermaid">
+flowchart TD
+    Config[OUTPUT_STRUCTURE="by_model"] --> Structure["🗂️ Directory-Only Structure"]
+    
+    Structure --> Output["Ausgabe/job-profile/<br/>├── sample_content/<br/>│   ├── anschreiben.md<br/>│   ├── lebenslauf.md<br/>│   ├── README.md<br/>│   └── pdf/<br/>├── claude_sonnet_3_5/<br/>│   ├── anschreiben.md<br/>│   ├── lebenslauf.md<br/>│   └── pdf/<br/>└── llama_3_1_8b/<br/>    ├── anschreiben.md<br/>    └── pdf/"]
+    
+    Structure --> Benefits["✅ Benefits<br/>• No root files<br/>• Clean separation<br/>• Easy comparison<br/>• Provider-specific docs"]
+    
+    style Structure fill:#e8f5e8
+    style Output fill:#f3e5f5
+    style Benefits fill:#e1f5fe
+            </pre>
+        </div>
+        
+        <div class="description">
+            <h4>Key Features:</h4>
+            <ul>
+                <li><strong>No Root Files:</strong> All documents are contained within AI provider subdirectories</li>
+                <li><strong>Clean Organization:</strong> Each AI provider gets its own folder (e.g., <code>sample_content/</code>, <code>claude_sonnet_3_5/</code>)</li>
+                <li><strong>Easy Comparison:</strong> Compare outputs from different AI providers side-by-side</li>
+                <li><strong>Self-Contained:</strong> Each folder includes provider-specific documentation and PDFs</li>
+            </ul>
+            
+            <h4>Directory Structure Benefits:</h4>
+            <ul>
+                <li><strong>Scalability:</strong> Easy to add new AI providers</li>
+                <li><strong>Maintainability:</strong> Clear separation of concerns</li>
+                <li><strong>Version Control:</strong> Clean git history with provider-specific changes</li>
+                <li><strong>Analysis:</strong> Facilitates content comparison and quality assessment</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            htmlLabels: false,
+            flowchart: {
+                curve: 'basis',
+                htmlLabels: false
+            }
+        });
+    </script>
+</body>
+</html>

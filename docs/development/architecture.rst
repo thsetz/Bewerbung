@@ -16,59 +16,9 @@ The Bewerbung Generator follows a modular, extensible architecture designed for:
 High-Level Architecture
 -----------------------
 
-.. mermaid::
+📊 **Interactive Diagram:** See ../diagrams/system-architecture.html
 
-   graph TB
-       subgraph "🖥️ CLI Interface"
-           CLI[Makefile Targets]
-       end
-       
-       subgraph "🎯 Main Controller" 
-           BG[BewerbungGenerator]
-       end
-       
-       subgraph "🔧 Core Components"
-           ACF[AI Client Factory]
-           TM[Template Manager]
-           DG[Document Generator]
-       end
-       
-       subgraph "🤖 AI Providers"
-           CAC[Claude API Client]
-           LAC[Llama/Ollama Client]  
-           SC[Sample Content]
-       end
-       
-       subgraph "📊 Analysis Tools"
-           CA[Content Analysis]
-           RT[Regeneration Testing]
-           VA[Variants Analyzer]
-       end
-       
-       CLI --> BG
-       BG --> ACF
-       BG --> TM
-       BG --> DG
-       
-       ACF --> CAC
-       ACF --> LAC
-       ACF --> SC
-       
-       BG --> CA
-       BG --> RT
-       BG --> VA
-       
-       style CLI fill:#e1f5fe
-       style BG fill:#e8f5e8
-       style ACF fill:#fff3e0
-       style TM fill:#fff3e0
-       style DG fill:#fff3e0
-       style CAC fill:#f3e5f5
-       style LAC fill:#f3e5f5
-       style SC fill:#f3e5f5
-       style CA fill:#fce4ec
-       style RT fill:#fce4ec
-       style VA fill:#fce4ec
+The Bewerbung Generator follows a modular, extensible architecture with clear separation of concerns.
 
 Core Components
 ---------------

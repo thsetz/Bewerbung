@@ -1,0 +1,15 @@
+flowchart LR
+    Start(["Content Request"]) --> Check1{"Llama/Ollama<br/>Available?"}
+    Check1 -->|"✅ Yes"| Llama["🦙 Llama/Ollama<br/>Local & Private"]
+    Check1 -->|"❌ No"| Check2{"Claude API<br/>Available?"}
+    Check2 -->|"✅ Yes"| Claude["🧠 Claude API<br/>High Quality"]
+    Check2 -->|"❌ No"| Sample["📝 Sample Content<br/>Always Available"]
+    
+    Llama --> Success["✅ Generated Content"]
+    Claude --> Success
+    Sample --> Success
+    
+    style Llama fill:#e3f2fd
+    style Claude fill:#f3e5f5
+    style Sample fill:#fff3e0
+    style Success fill:#e8f5e8
