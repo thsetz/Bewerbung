@@ -83,7 +83,7 @@ AI Provider Selection
    :maxdepth: 2
    :caption: Testing & Quality
    
-   testing/coverage.md
+   testing/coverage
 
 Features
 --------
