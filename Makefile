@@ -1,6 +1,6 @@
 # Makefile for Bewerbung Generator
 
-.PHONY: test_1 test_2 test_3 test_4 test install clean venv generate
+.PHONY: test_1 test_2 test_3 test_4 test install clean venv generate variants variants-detailed docs docs-pdf docs-clean docs-serve docs-check docs-all
 
 # Create virtual environment if it doesn't exist
 venv:
@@ -145,6 +145,71 @@ generate-and-test: venv
 	else \
 		OUTPUT_STRUCTURE=by_model GENERATE_DOCUMENTATION=true INCLUDE_GENERATION_METADATA=true make generate && python tests/test_regeneration.py --mode=content; \
 	fi
+
+# Analyze content variants across different AI client/model combinations
+variants: venv
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		echo "Activating virtual environment and analyzing content variants..."; \
+		. .venv/bin/activate && python src/content_variants_analyzer.py; \
+	else \
+		python src/content_variants_analyzer.py; \
+	fi
+
+# Analyze content variants with detailed content comparison
+variants-detailed: venv
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		echo "Activating virtual environment and analyzing content variants (detailed)..."; \
+		. .venv/bin/activate && python src/content_variants_analyzer.py --content; \
+	else \
+		python src/content_variants_analyzer.py --content; \
+	fi
+
+# Build Sphinx documentation
+docs: venv
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		echo "Activating virtual environment and building documentation..."; \
+		. .venv/bin/activate && cd docs && make html; \
+	else \
+		cd docs && make html; \
+	fi
+	@echo "📚 Documentation built successfully!"
+	@echo "📁 Open: docs/_build/html/index.html"
+
+# Build PDF documentation
+docs-pdf: venv
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		echo "Activating virtual environment and building PDF documentation..."; \
+		. .venv/bin/activate && cd docs && make latexpdf; \
+	else \
+		cd docs && make latexpdf; \
+	fi
+
+# Clean documentation build files
+docs-clean:
+	@echo "Cleaning documentation build files..."
+	@cd docs && make clean
+
+# Serve documentation locally
+docs-serve: docs
+	@echo "🌐 Starting documentation server..."
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		. .venv/bin/activate && python -m http.server 8000 --directory docs/_build/html; \
+	else \
+		python -m http.server 8000 --directory docs/_build/html; \
+	fi
+
+# Check documentation for broken links and issues
+docs-check: venv
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		echo "Checking documentation for issues..."; \
+		. .venv/bin/activate && cd docs && make linkcheck; \
+	else \
+		cd docs && make linkcheck; \
+	fi
+
+# Build all documentation formats
+docs-all: docs docs-pdf
+	@echo "📚 All documentation formats built successfully!"
 
 # Clean up temporary files
 clean:

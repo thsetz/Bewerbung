@@ -6,6 +6,8 @@ Bewerbung Generator - Generates German job applications from profiles and job de
 import os
 import re
 import json
+import logging
+from datetime import datetime
 from pathlib import Path
 from typing import Optional, Tuple, Dict
 
@@ -15,6 +17,49 @@ class BewerbungGenerator:
         self.profil_dir = self.base_dir / "profil"
         self.stellenbeschreibung_dir = self.base_dir / "Stellenbeschreibung"
         self.ausgabe_dir = self.base_dir / "Ausgabe"
+        self.logger = None  # Will be set up when generation starts
+    
+    def setup_logging(self, output_dir: Path) -> logging.Logger:
+        """Setup structured logging for the generation process"""
+        log_file = output_dir / "generation.log"
+        
+        # Create logger
+        logger = logging.getLogger(f'bewerbung_generator_{id(self)}')
+        logger.setLevel(logging.INFO)
+        
+        # Clear any existing handlers
+        logger.handlers.clear()
+        
+        # Create formatters
+        file_formatter = logging.Formatter(
+            '%(asctime)s | %(levelname)-8s | %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S'
+        )
+        
+        console_formatter = logging.Formatter(
+            '%(levelname)-8s | %(message)s'
+        )
+        
+        # File handler
+        file_handler = logging.FileHandler(log_file, encoding='utf-8')
+        file_handler.setLevel(logging.INFO)
+        file_handler.setFormatter(file_formatter)
+        logger.addHandler(file_handler)
+        
+        # Console handler for errors/warnings
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.WARNING)
+        console_handler.setFormatter(console_formatter)
+        logger.addHandler(console_handler)
+        
+        # Log initial info
+        logger.info("=== Bewerbung Generation Started ===")
+        logger.info(f"Output directory: {output_dir}")
+        logger.info(f"Base directory: {self.base_dir}")
+        logger.info(f"Timestamp: {datetime.now().isoformat()}")
+        
+        self.logger = logger
+        return logger
     
     def get_newest_file_by_date_pattern(self, directory: Path, pattern: str = r"(\d{8})_.*") -> Optional[Path]:
         """
@@ -133,15 +178,27 @@ class BewerbungGenerator:
         else:
             model_output_dir = output_dir
         
+        # Setup logging
+        logger = self.setup_logging(model_output_dir)
+        logger.info(f"Output structure: {output_structure}")
+        logger.info(f"Model output directory: {model_output_dir}")
+        logger.info(f"AI client: {ai_client.__class__.__name__}")
+        logger.info(f"AI model: {ai_client.get_model_name()}")
+        logger.info(f"Include metadata: {include_metadata}")
+        
         # Read input content
+        logger.info(f"Reading job description: {job_file.name}")
+        logger.info(f"Reading profile: {profile_file.name}")
         job_content = job_file.read_text(encoding='utf-8')
         profile_content = f"Profile: {profile_file.name}"  # Placeholder for actual profile content
         
         # Extract company and position info
+        logger.info("Extracting company and position information")
         if ai_client.is_available():
             company_info = ai_client.extract_company_and_position(job_content)
             company_name = company_info['company_name']
             position_title = company_info['position_title']
+            logger.info(f"AI extraction successful: {company_name} - {position_title}")
         else:
             company_name = "Beispiel Unternehmen GmbH"
             position_title = "Software Engineer"
@@ -153,22 +210,28 @@ class BewerbungGenerator:
                 'adressat_plz_ort': '12345 Musterstadt',
                 'adressat_land': 'Deutschland'
             }
+            logger.info(f"Using fallback company info: {company_name} - {position_title}")
         
         print(f"Company: {company_name}, Position: {position_title}")
         
         # Generate AI content for cover letter
+        logger.info("Starting AI content generation")
         if ai_client.is_available():
             print("Generating AI content...")
+            logger.info("AI provider available - generating personalized content")
             ai_content = ai_client.generate_all_cover_letter_content(
                 job_description=job_content,
                 profile_content=profile_content,
                 company_name=company_name,
                 position_title=position_title
             )
+            logger.info("AI content generation completed successfully")
         else:
             print("Using sample AI content...")
+            logger.warning("AI provider not available - using sample content")
             from ai_content_generator import generate_sample_ai_content
             ai_content = generate_sample_ai_content()
+            logger.info("Sample content loaded")
         
         # Addressee data for cover letter (lowercase for dynamic content)
         adressat_data = {
@@ -183,6 +246,10 @@ class BewerbungGenerator:
         os.environ['STELLE'] = company_info.get('stelle', position_title)
         os.environ['STELLEN_ID'] = company_info.get('stellen_id', '')
         
+        logger.info(f"Adressat: {os.environ['ADRESSAT_FIRMA']}")
+        logger.info(f"Stelle: {os.environ['STELLE']}")
+        logger.info(f"Stellen-ID: {os.environ['STELLEN_ID']}")
+        
         print(f"Adressat: {os.environ['ADRESSAT_FIRMA']}")
         print(f"Stelle: {os.environ['STELLE']}")
         print(f"Stellen-ID: {os.environ['STELLEN_ID']}")
@@ -192,16 +259,21 @@ class BewerbungGenerator:
         
         try:
             # Generate documents
+            logger.info("Starting document generation")
             print("Rendering cover letter...")
+            logger.info("Rendering cover letter template")
             anschreiben_md = template_manager.render_anschreiben(adressat_data, ai_content)
             
             print("Rendering CV...")
+            logger.info("Rendering CV template")
             lebenslauf_md = template_manager.render_lebenslauf()
             
             print("Generating attachments list...")
+            logger.info("Generating attachments list")
             attachments_content = self._generate_attachments_list(profile_file)
             
             # Save to model-specific directory
+            logger.info(f"Saving documents to model directory: {model_output_dir}")
             self._save_documents_to_directory(
                 model_output_dir, 
                 anschreiben_md, 
@@ -210,10 +282,12 @@ class BewerbungGenerator:
                 template_manager
             )
             generated_files['model_output_dir'] = model_output_dir
+            logger.info("Documents saved to model directory successfully")
             
             # If "both" structure, also save to legacy location
             if output_structure == "both":
                 print("📁 Also saving to legacy structure...")
+                logger.info(f"Also saving to legacy directory: {output_dir}")
                 self._save_documents_to_directory(
                     output_dir,
                     anschreiben_md,
@@ -222,18 +296,22 @@ class BewerbungGenerator:
                     template_manager
                 )
                 generated_files['legacy_output_dir'] = output_dir
+                logger.info("Documents saved to legacy directory successfully")
             
             # Generate metadata if requested
             if include_metadata:
+                logger.info("Generating metadata file")
                 metadata = self._generate_metadata(ai_client, job_file, profile_file, ai_content)
                 metadata_path = model_output_dir / "generation_info.json"
                 metadata_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False), encoding='utf-8')
                 print(f"📊 Generated metadata: {metadata_path}")
                 generated_files['metadata'] = metadata_path
+                logger.info(f"Metadata saved: {metadata_path}")
             
             # Generate documentation if requested
             generate_docs = os.getenv("GENERATE_DOCUMENTATION", "true").lower() == "true"
             if generate_docs:
+                logger.info("Starting documentation generation")
                 try:
                     from documentation_generator import DocumentationGenerator
                     doc_generator = DocumentationGenerator(str(self.base_dir))
@@ -251,16 +329,26 @@ class BewerbungGenerator:
                     
                     generated_files.update(docs)
                     print(f"📚 Generated documentation: README.md, regeneration scripts")
+                    logger.info("Documentation generation completed successfully")
                     
                 except ImportError as e:
+                    logger.error(f"Documentation generation failed - ImportError: {e}")
                     print(f"⚠️  Documentation generation failed: {e}")
                 except Exception as e:
+                    logger.error(f"Documentation generation error: {e}")
                     print(f"⚠️  Error generating documentation: {e}")
+            else:
+                logger.info("Documentation generation skipped (GENERATE_DOCUMENTATION=false)")
             
+            logger.info("=== Bewerbung Generation Completed Successfully ===")
+            logger.info(f"Generated files: {list(generated_files.keys())}")
+            logger.info(f"Total processing time: {datetime.now().isoformat()}")
             print("✓ Application documents generated successfully")
             return generated_files
             
         except Exception as e:
+            logger.error(f"Error during generation: {e}")
+            logger.warning("Falling back to basic document generation")
             print(f"Error generating documents: {e}")
             return self._generate_basic_documents(output_dir, profile_file, job_file)
     

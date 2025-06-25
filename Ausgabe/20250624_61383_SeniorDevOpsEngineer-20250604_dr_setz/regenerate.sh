@@ -1,13 +1,13 @@
 #!/bin/bash
 # Auto-generated regeneration script for job application
-# Created: 2025-06-25T02:07:31.016438
-# AI Provider: llama (3-2-latest)
+# Created: 2025-06-25T02:00:21.042481
+# AI Provider: Unknown (Unknown)
 
 set -e  # Exit on any error
 
 echo "🔄 Regenerating job application with same configuration..."
-echo "📊 Original generation: 2025-06-25T02:07:31.016438"
-echo "🤖 AI Provider: llama (3-2-latest)"
+echo "📊 Original generation: 2025-06-25T02:00:21.042481"
+echo "🤖 AI Provider: Unknown (Unknown)"
 
 # Color output
 RED='\033[0;31m'
@@ -45,10 +45,9 @@ echo "📦 Installing dependencies..."
 pip install -r requirements.txt
 
 # Set environment variables for exact reproduction
-export AI_PROVIDER="llama"
+export AI_PROVIDER="claude"
 export OUTPUT_STRUCTURE="by_model"
 export INCLUDE_GENERATION_METADATA="true"
-export LLAMA_MODEL="3-2-latest"
 
 # Check AI provider availability
 echo "🤖 Checking AI provider availability..."

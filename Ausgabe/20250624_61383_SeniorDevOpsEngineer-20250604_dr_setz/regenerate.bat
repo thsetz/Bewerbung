@@ -1,10 +1,10 @@
 @echo off
 REM Auto-generated regeneration script for job application
-REM Created: 2025-06-25T02:06:13.511611
+REM Created: 2025-06-25T02:00:21.042481
 REM AI Provider: Unknown (Unknown)
 
 echo 🔄 Regenerating job application with same configuration...
-echo 📊 Original generation: 2025-06-25T02:06:13.511611
+echo 📊 Original generation: 2025-06-25T02:00:21.042481
 echo 🤖 AI Provider: Unknown (Unknown)
 
 REM Check if we're in the right directory

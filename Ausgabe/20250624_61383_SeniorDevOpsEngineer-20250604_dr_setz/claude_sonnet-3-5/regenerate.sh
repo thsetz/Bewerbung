@@ -1,12 +1,12 @@
 #!/bin/bash
 # Auto-generated regeneration script for job application
-# Created: 2025-06-25T01:45:45.170160
+# Created: 2025-06-25T02:06:13.511611
 # AI Provider: Unknown (Unknown)
 
 set -e  # Exit on any error
 
 echo "🔄 Regenerating job application with same configuration..."
-echo "📊 Original generation: 2025-06-25T01:45:45.170160"
+echo "📊 Original generation: 2025-06-25T02:06:13.511611"
 echo "🤖 AI Provider: Unknown (Unknown)"
 
 # Color output
@@ -45,7 +45,7 @@ echo "📦 Installing dependencies..."
 pip install -r requirements.txt
 
 # Set environment variables for exact reproduction
-export AI_PROVIDER="auto"
+export AI_PROVIDER="claude"
 export OUTPUT_STRUCTURE="by_model"
 export INCLUDE_GENERATION_METADATA="true"
 

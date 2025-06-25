@@ -80,6 +80,7 @@ This folder contains a complete German job application generated using AI:
 - **📄 anlagen.md** - Attachments list (Anlagen)
 - **📁 pdf/** - PDF versions of all documents
 - **📊 generation_info.json** - Technical metadata
+- **📜 generation.log** - Detailed generation log
 
 ---
 
@@ -337,33 +338,39 @@ pause
     
     def _generate_env_vars_section(self, generation_info: Dict[str, Any]) -> str:
         """Generate environment variables section for Unix script"""
-        ai_stats = generation_info.get("ai_client_stats", {})
+        gen_info = generation_info.get("generation_info", {})
+        
+        provider = gen_info.get("ai_provider", "auto")
+        model = gen_info.get("ai_model", "")
         
         env_vars = [
-            f'export AI_PROVIDER="{ai_stats.get("provider", "auto")}"',
+            f'export AI_PROVIDER="{provider}"',
             'export OUTPUT_STRUCTURE="by_model"',
             'export INCLUDE_GENERATION_METADATA="true"'
         ]
         
         # Add provider-specific variables
-        if ai_stats.get("provider") == "llama":
-            env_vars.append(f'export LLAMA_MODEL="{ai_stats.get("model", "llama3.2:latest")}"')
+        if provider == "llama":
+            env_vars.append(f'export LLAMA_MODEL="{model}"')
         
         return "\n".join(env_vars)
     
     def _generate_env_vars_section_windows(self, generation_info: Dict[str, Any]) -> str:
         """Generate environment variables section for Windows script"""
-        ai_stats = generation_info.get("ai_client_stats", {})
+        gen_info = generation_info.get("generation_info", {})
+        
+        provider = gen_info.get("ai_provider", "auto")
+        model = gen_info.get("ai_model", "")
         
         env_vars = [
-            f'set AI_PROVIDER={ai_stats.get("provider", "auto")}',
+            f'set AI_PROVIDER={provider}',
             'set OUTPUT_STRUCTURE=by_model',
             'set INCLUDE_GENERATION_METADATA=true'
         ]
         
         # Add provider-specific variables
-        if ai_stats.get("provider") == "llama":
-            env_vars.append(f'set LLAMA_MODEL={ai_stats.get("model", "llama3.2:latest")}')
+        if provider == "llama":
+            env_vars.append(f'set LLAMA_MODEL={model}')
         
         return "\n".join(env_vars)
     
