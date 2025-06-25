@@ -16,7 +16,7 @@ The Bewerbung Generator follows a modular, extensible architecture designed for:
 High-Level Architecture
 -----------------------
 
-📊 **Interactive Diagram:** See ../diagrams/system-architecture.html
+📊 **Interactive Diagram:** `View System Architecture <../_static/../diagrams/system-architecture.html>`_
 
 The Bewerbung Generator follows a modular, extensible architecture with clear separation of concerns.
 
@@ -96,96 +96,61 @@ Data Flow
 Input Processing
 ~~~~~~~~~~~~~~~
 
-.. mermaid::
+The input processing flow includes:
 
-   flowchart TB
-       subgraph "📁 Input Files"
-           PF[profil/YYYYMMDD_*.pdf]
-           JF[Stellenbeschreibung/YYYYMMDD_*.txt]
-       end
-       
-       subgraph "🔍 Discovery Process"
-           PD[Profile Discovery<br/>→ Newest by date]
-           JD[Job Description Discovery<br/>→ Newest by date]
-       end
-       
-       subgraph "📝 Content Processing"
-           PE[Profile Extraction<br/>→ Variable population]
-           JP[Job Parsing<br/>→ Company/position extraction]
-       end
-       
-       PF --> PD --> PE
-       JF --> JD --> JP
-       
-       PE --> Merge[🔗 Merge Data]
-       JP --> Merge
-       
-       style PF fill:#e1f5fe
-       style JF fill:#e8f5e8
-       style Merge fill:#fff3e0
+1. **📁 Input File Discovery**
+   - Profile files: ``profil/YYYYMMDD_*.pdf``
+   - Job descriptions: ``Stellenbeschreibung/YYYYMMDD_*.txt``
+
+2. **🔍 Discovery Process**
+   - Profile Discovery → Newest by date
+   - Job Description Discovery → Newest by date
+
+3. **📝 Content Processing**
+   - Profile Extraction → Variable population
+   - Job Parsing → Company/position extraction
+   - Data Merge → Combined context
 
 AI Content Generation
 ~~~~~~~~~~~~~~~~~~~~
 
-.. mermaid::
+The AI content generation follows this process:
 
-   flowchart TD
-       Input[📊 Job Description + Profile] --> Factory[🏭 AI Client Factory]
-       Factory --> Selection{🎯 Provider Selection}
-       
-       Selection -->|1st Choice| Claude[🧠 Claude API]
-       Selection -->|2nd Choice| Llama[🦙 Llama/Ollama]
-       Selection -->|Fallback| Sample[📝 Sample Content]
-       
-       Claude --> Cache[💾 Content Caching]
-       Llama --> Cache
-       Sample --> Cache
-       
-       Cache --> Sections[📋 5 Content Sections]
-       Sections --> Render[🎨 Template Rendering]
-       
-       subgraph "📋 Content Sections"
-           E[Einstiegstext]
-           F[Fachliche Passung]
-           M[Motivationstext]
-           W[Mehrwert]
-           A[Abschlusstext]
-       end
-       
-       style Input fill:#e1f5fe
-       style Factory fill:#e8f5e8
-       style Cache fill:#fff3e0
-       style Render fill:#f3e5f5
+1. **🏭 AI Client Factory** - Creates appropriate provider client
+2. **🎯 Provider Selection** - Chooses from available providers:
+   
+   - **1st Choice**: Claude API (🧠 Claude API)
+   - **2nd Choice**: Llama/Ollama (🦙 Llama/Ollama) 
+   - **Fallback**: Sample Content (📝 Sample Content)
+
+3. **💾 Content Caching** - Stores generated content for reuse
+4. **📋 5 Content Sections** - Generates specialized sections:
+   
+   - Einstiegstext (Opening)
+   - Fachliche Passung (Technical Fit)
+   - Motivationstext (Motivation)
+   - Mehrwert (Value Proposition)
+   - Abschlusstext (Closing)
+
+5. **🎨 Template Rendering** - Combines content with templates
 
 Output Structure Decision
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. mermaid::
+The output structure is determined by the ``OUTPUT_STRUCTURE`` environment variable:
 
-   flowchart TD
-       Content[📝 Rendered Content] --> Decision{⚙️ OUTPUT_STRUCTURE}
-       
-       Decision -->|legacy| Legacy[📁 Legacy Structure]
-       Decision -->|by_model| ByModel[📂 By-Model Structure] 
-       Decision -->|both| Both[📁📂 Both Structures]
-       
-       Legacy --> LDir[📁 Single Directory<br/>Ausgabe/job-profile/]
-       ByModel --> MDir[📂 Model Directories<br/>Ausgabe/job-profile/model_name/]
-       Both --> LDir
-       Both --> MDir
-       
-       LDir --> Generation[📄 Document Generation]
-       MDir --> Generation
-       
-       Generation --> Markdown[📝 Markdown Files]
-       Generation --> PDF[📄 PDF Files]
-       Generation --> Docs[📚 Documentation]
-       Generation --> Scripts[🔄 Regeneration Scripts]
-       
-       style Decision fill:#fff3e0
-       style Legacy fill:#e1f5fe
-       style ByModel fill:#f3e5f5
-       style Both fill:#e8f5e8
+**Structure Options:**
+
+- **legacy**: Single directory structure (``Ausgabe/job-profile/``)
+- **by_model**: Model-specific directories (``Ausgabe/job-profile/model_name/``)
+- **both**: Creates both structure types
+
+**Generated Content:**
+
+1. **📝 Markdown Files** - Source documents
+2. **📄 PDF Files** - Converted documents
+3. **📚 Documentation** - README and metadata
+4. **🔄 Regeneration Scripts** - Reproducibility tools
 
 Design Patterns
 ---------------
