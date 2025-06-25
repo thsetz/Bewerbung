@@ -116,7 +116,30 @@ class TemplateManager:
         ai_content: lowercase variables for AI-generated content
         """
         additional_vars = {}
-        additional_vars.update(adressat_vars)
+        
+        # Map lowercase adressat variables to uppercase template variables
+        variable_mapping = {
+            'adressat_unternehmen': 'ADRESSAT_FIRMA',
+            'adressat_abteilung': 'ADRESSAT_ABTEILUNG', 
+            'adressat_ansprechpartner': 'ADRESSAT_ANSPRECHPARTNER',
+            'adressat_strasse': 'ADRESSAT_STRASSE',
+            'adressat_hausnummer': 'ADRESSAT_HAUSNUMMER',
+            'adressat_plz': 'ADRESSAT_PLZ',
+            'adressat_ort': 'ADRESSAT_ORT',
+            'position': 'STELLE',
+            'referenz_nummer': 'STELLEN_ID'
+        }
+        
+        # Transform adressat variables using mapping
+        for key, value in adressat_vars.items():
+            if key in variable_mapping:
+                additional_vars[variable_mapping[key]] = value
+            else:
+                additional_vars[key] = value
+        
+        # Handle combined PLZ_ORT for template
+        if 'adressat_plz' in adressat_vars and 'adressat_ort' in adressat_vars:
+            additional_vars['ADRESSAT_PLZ_ORT'] = f"{adressat_vars['adressat_plz']} {adressat_vars['adressat_ort']}"
         
         if ai_content:
             additional_vars.update(ai_content)

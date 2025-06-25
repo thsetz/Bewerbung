@@ -64,13 +64,22 @@ test_memory: venv
 		python -m pytest tests/test_performance_requirements.py::TestPerformanceRequirements::test_memory_usage_stability -v; \
 	fi
 
-# Run tests with coverage collection
+# Run performance tests separately
+test-performance: venv
+	@echo "⚡ Running performance tests..."
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		. .venv/bin/activate && python -m pytest tests/ -v -m "performance"; \
+	else \
+		python -m pytest tests/ -v -m "performance"; \
+	fi
+
+# Run tests with coverage collection (excluding performance tests)
 test-coverage: venv
 	@echo "🧪 Running tests with coverage collection..."
 	@if [ -z "$$VIRTUAL_ENV" ]; then \
-		. .venv/bin/activate && python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=html --cov-report=xml -v; \
+		. .venv/bin/activate && python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=html --cov-report=xml -v -m "not performance"; \
 	else \
-		python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=html --cov-report=xml -v; \
+		python -m pytest tests/ --cov=src --cov-report=term-missing --cov-report=html --cov-report=xml -v -m "not performance"; \
 	fi
 	@echo "📊 Coverage reports generated:"
 	@echo "  - HTML: docs/_static/coverage/index.html"

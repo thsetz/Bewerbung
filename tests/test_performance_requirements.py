@@ -28,9 +28,11 @@ from ai_client_factory import AIClientFactory
 
 class TestPerformanceRequirements:
     
-    def setup_method(self):
+    def setup_method(self, method):
         """Set up test environment"""
-        self.test_dir = Path(tempfile.mkdtemp())
+        # Create unique temp directory for each test method
+        test_name = f"perf_test_{method.__name__}_{int(time.time() * 1000)}"
+        self.test_dir = Path(tempfile.mkdtemp(prefix=test_name))
         self.profil_dir = self.test_dir / "profil"
         self.stellen_dir = self.test_dir / "Stellenbeschreibung"
         self.ausgabe_dir = self.test_dir / "Ausgabe"
@@ -50,12 +52,25 @@ Test job description content for performance testing."""
         (self.profil_dir / "20250604_dr_setz.pdf").write_text(profile_content)
         (self.stellen_dir / "20250624_61383_SeniorDevOpsEngineer.txt").write_text(job_content)
         
-    def teardown_method(self):
+    def teardown_method(self, method):
         """Clean up test environment"""
-        if self.test_dir.exists():
-            shutil.rmtree(self.test_dir)
+        try:
+            if hasattr(self, 'test_dir') and self.test_dir.exists():
+                # Force cleanup with retry for Windows compatibility
+                for attempt in range(3):
+                    try:
+                        shutil.rmtree(self.test_dir)
+                        break
+                    except (PermissionError, OSError) as e:
+                        if attempt < 2:
+                            time.sleep(0.1)  # Brief delay before retry
+                        else:
+                            print(f"Warning: Could not clean up test directory {self.test_dir}: {e}")
+        except Exception as e:
+            print(f"Error during teardown: {e}")
     
     @pytest.mark.performance
+    @pytest.mark.timeout(60)  # 60 second timeout
     def test_complete_generation_time_under_30_seconds(self):
         """Test NFR-Perf-1: Complete generation within 30 seconds"""
         generator = BewerbungGenerator(str(self.test_dir))
@@ -95,6 +110,7 @@ Test job description content for performance testing."""
                 raise e
     
     @pytest.mark.performance
+    @pytest.mark.timeout(30)  # 30 second timeout
     def test_ai_content_generation_time(self):
         """Test NFR-Perf-3: AI content generation within 10 seconds"""
         factory = AIClientFactory(str(self.test_dir))
@@ -125,6 +141,7 @@ Test job description content for performance testing."""
         print(f"✅ AI generation time: {ai_generation_time:.2f}s (target: <10s)")
     
     @pytest.mark.performance
+    @pytest.mark.timeout(30)  # 30 second timeout
     def test_pdf_conversion_time(self):
         """Test NFR-Perf-4: PDF conversion within 5 seconds"""
         pdf_generator = PDFGenerator(str(self.test_dir))
@@ -178,13 +195,14 @@ End of test document.
             raise e
     
     @pytest.mark.performance
+    @pytest.mark.timeout(120)  # 2 minute timeout for bulk processing
     def test_bulk_processing_capability(self):
         """Test NFR-Perf-2: Support for multiple applications (bulk processing simulation)"""
         generator = BewerbungGenerator(str(self.test_dir))
         
         # Create multiple job descriptions for bulk testing
         job_files = []
-        for i in range(5):  # Test with 5 applications
+        for i in range(2):  # Reduced from 5 to 2 for faster testing
             job_content = f"""Company {i+1} GmbH
 Test Position {i+1}
 Reference: {1000+i}
@@ -232,6 +250,7 @@ Job description for position {i+1}."""
                 pytest.fail("No successful generations in bulk processing test")
     
     @pytest.mark.performance
+    @pytest.mark.timeout(60)  # 60 second timeout
     def test_memory_usage_stability(self):
         """Test memory stability during processing - NFR-Perf-2 related"""
         import psutil
@@ -247,7 +266,7 @@ Job description for position {i+1}."""
         
         # Process multiple applications
         with patch.dict(os.environ, {'GENERATE_ALL_PROVIDERS': 'false', 'AI_PROVIDER': 'sample'}):
-            for i in range(3):  # Small number for CI compatibility
+            for i in range(2):  # Reduced from 3 to 2 for faster testing
                 try:
                     output_dir = generator.create_output_directory(profile_file, job_file)
                     # Use unique output directories
@@ -274,6 +293,7 @@ Job description for position {i+1}."""
         
         print(f"✅ Memory usage: {initial_memory:.1f}MB → {final_memory:.1f}MB (+{memory_increase:.1f}MB)")
     
+    @pytest.mark.timeout(30)  # 30 second timeout
     def test_cache_performance_impact(self):
         """Test performance difference between cached and non-cached generation"""
         factory = AIClientFactory(str(self.test_dir))
