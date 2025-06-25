@@ -6,14 +6,14 @@ Welcome to the Bewerbung Generator documentation! This tool generates profession
 System Workflow
 ---------------
 
-📊 **Interactive Diagram:** `View System Workflow <_static/../diagrams/system-workflow.html>`_
+📊 **Interactive Diagram:** `View System Workflow <_static/system-workflow.html>`_
 
 The application generation follows a structured 7-step process from cache clearing through PDF conversion.
 
 AI Provider Selection
 ---------------------
 
-📊 **Interactive Diagram:** `View AI Provider Selection <_static/../diagrams/ai-provider-selection.html>`_
+📊 **Interactive Diagram:** `View AI Provider Selection <_static/ai-provider-selection.html>`_
 
 The system uses intelligent multi-provider fallback with automatic provider switching for reliable content generation.
 

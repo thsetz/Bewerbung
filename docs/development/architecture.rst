@@ -16,7 +16,7 @@ The Bewerbung Generator follows a modular, extensible architecture designed for:
 High-Level Architecture
 -----------------------
 
-📊 **Interactive Diagram:** `View System Architecture <../_static/../diagrams/system-architecture.html>`_
+📊 **Interactive Diagram:** `View System Architecture <../_static/system-architecture.html>`_
 
 The Bewerbung Generator follows a modular, extensible architecture with clear separation of concerns.
 
