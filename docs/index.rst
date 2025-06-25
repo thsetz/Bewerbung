@@ -9,21 +9,24 @@ System Workflow
 .. mermaid::
 
    flowchart TD
-       A[📁 Step 1: Read Profile] --> B[📄 Step 2: Read Job Description]
+       A0[🗑️ Step 0: Clear AI Cache] --> A[📁 Step 1: Read Profile]
+       A --> B[📄 Step 2: Read Job Description]
        B --> C[📂 Step 3: Create Output Directory]
        C --> D[🤖 Step 4: Generate AI Content]
        D --> E[📁 Step 5: Create PDF Directory]
        E --> F[📄 Step 6: Convert to PDF]
        
+       A01[.cache/ai_content_cache.json<br/>→ Clear for fresh content] --> A0
        A1[profil/YYYYMMDD_*.pdf<br/>→ Newest file] --> A
        B1[Stellenbeschreibung/YYYYMMDD_*.txt<br/>→ Newest file] --> B
        C1[Ausgabe/DATE_job-DATE_profile/] --> C
-       D1[AI Provider Chain:<br/>Llama → Claude → Sample] --> D
+       D1[AI Provider Chain:<br/>Llama → Claude → Sample<br/>(Fresh content, no cache)] --> D
        E1[Create /pdf subdirectory] --> E
        F1[Markdown → HTML → PDF] --> F
        
        F --> G[✅ Complete Application Package]
        
+       style A0 fill:#ffebee
        style A fill:#e1f5fe
        style B fill:#e8f5e8
        style C fill:#fff3e0

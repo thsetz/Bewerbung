@@ -1,6 +1,6 @@
 # Makefile for Bewerbung Generator
 
-.PHONY: test_1 test_2 test_3 test_4 test install clean venv generate variants variants-detailed docs docs-pdf docs-clean docs-serve docs-check docs-all
+.PHONY: test_1 test_2 test_3 test_4 test install clean venv generate variants variants-detailed docs docs-pdf docs-clean docs-serve docs-check docs-all clear-cache generate-fresh generate-cached cache-status
 
 # Create virtual environment if it doesn't exist
 venv:
@@ -210,6 +210,38 @@ docs-check: venv
 # Build all documentation formats
 docs-all: docs docs-pdf
 	@echo "📚 All documentation formats built successfully!"
+
+# Clear AI content cache manually
+clear-cache:
+	@echo "🗑️ Clearing AI content cache..."
+	@rm -f .cache/ai_content_cache.json
+	@echo "✅ AI content cache cleared"
+
+# Generate application with fresh content (no cache)
+generate-fresh: clear-cache generate
+	@echo "✅ Fresh application generation completed!"
+
+# Generate application preserving existing cache
+generate-cached: 
+	@echo "🚀 Generating application with cache preservation..."
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		echo "Activating virtual environment..."; \
+		. .venv/bin/activate && CLEAR_CACHE_ON_START=false python src/bewerbung_generator.py; \
+	else \
+		CLEAR_CACHE_ON_START=false python src/bewerbung_generator.py; \
+	fi
+
+# Show cache status and statistics
+cache-status:
+	@echo "📊 AI Content Cache Status:"
+	@if [ -f ".cache/ai_content_cache.json" ]; then \
+		echo "✅ Cache file exists: .cache/ai_content_cache.json"; \
+		echo "📏 Cache file size: $$(du -h .cache/ai_content_cache.json | cut -f1)"; \
+		echo "📅 Last modified: $$(date -r .cache/ai_content_cache.json)"; \
+		echo "🔢 Cache entries: $$(python -c "import json; print(len(json.load(open('.cache/ai_content_cache.json'))))" 2>/dev/null || echo "Error reading cache")"; \
+	else \
+		echo "❌ No cache file found"; \
+	fi
 
 # Clean up temporary files
 clean:
