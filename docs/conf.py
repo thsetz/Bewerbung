@@ -14,14 +14,25 @@ project_root = Path(__file__).parent.parent
 src_path = project_root / 'src'
 sys.path.insert(0, str(src_path))
 
+# Import version dynamically from package
+try:
+    from src import get_version, get_package_info
+    package_info = get_package_info()
+    dynamic_version = get_version()
+    package_author = package_info.get('author', 'Thomas Michael Setz')
+except ImportError:
+    # Fallback if import fails
+    dynamic_version = '1.0.3'
+    package_author = 'Thomas Michael Setz'
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Bewerbung Generator'
 copyright = '2025, Thomas Michael Setz'
-author = 'Thomas Michael Setz'
-release = '1.0.0'
-version = '1.0'
+author = package_author
+release = dynamic_version
+version = dynamic_version  # Full version string (Major.Minor.Patch)
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -151,6 +162,24 @@ myst_enable_extensions = [
     "substitution",
     "tasklist",
 ]
+
+# RST substitutions for version information
+rst_prolog = f"""
+.. |version| replace:: {dynamic_version}
+.. |release| replace:: {dynamic_version}
+.. |project| replace:: {project}
+.. |author| replace:: {package_author}
+.. |year| replace:: 2025
+"""
+
+# MyST substitutions for Markdown files
+myst_substitutions = {
+    "version": dynamic_version,
+    "release": dynamic_version,
+    "project": project,
+    "author": package_author,
+    "year": "2025",
+}
 
 # -- Options for copy button ------------------------------------------------
 

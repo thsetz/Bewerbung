@@ -305,11 +305,12 @@ variants-detailed: venv
 
 # Build Sphinx documentation
 docs: venv
+	@echo "📚 Building documentation with version verification..."
 	@if [ -z "$$VIRTUAL_ENV" ]; then \
 		echo "Activating virtual environment and building documentation..."; \
-		. .venv/bin/activate && cd docs && make html; \
+		. .venv/bin/activate && python -c "from src import get_version; print(f'📋 Building docs for version: {get_version()}')" && cd docs && make html; \
 	else \
-		cd docs && make html; \
+		python -c "from src import get_version; print(f'📋 Building docs for version: {get_version()}')" && cd docs && make html; \
 	fi
 	@echo "📚 Documentation built successfully!"
 	@echo "📁 Open: docs/_build/html/index.html"

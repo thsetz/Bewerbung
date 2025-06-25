@@ -2,10 +2,15 @@
 Developing
 ===========
 
-Developer Guide for Bewerbung Generator
-========================================
+Developer Guide for |project| v|version|
+==========================================
 
-This guide provides information for developers working on the Bewerbung Generator project, including development setup, coding standards, testing procedures, and release management.
+This guide provides information for developers working on the |project| project, including development setup, coding standards, testing procedures, and release management.
+
+.. note::
+   **Current Version:** |version| | **Release:** |release|
+   
+   This documentation corresponds to |project| version |version|. For the latest updates, check the `changelog <https://github.com/thsetz/Bewerbung/blob/main/CHANGELOG.md>`_.
 
 Development Setup
 =================

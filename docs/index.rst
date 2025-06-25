@@ -1,7 +1,26 @@
 Bewerbung Generator Documentation
 ==================================
 
-Welcome to the Bewerbung Generator documentation! This tool generates professional German job applications using AI-powered content generation with multiple provider support.
+.. raw:: html
+
+   <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+              color: white; 
+              padding: 20px; 
+              border-radius: 10px; 
+              margin: 20px 0; 
+              text-align: center;">
+      <h2 style="color: white; margin-top: 0;">🚀 Bewerbung Generator v1.0.3</h2>
+      <p style="margin-bottom: 0; font-size: 1.1em;">
+         Professional German Job Application Generator with AI Support
+      </p>
+   </div>
+
+Welcome to the **Bewerbung Generator v|version|** documentation! This tool generates professional German job applications using AI-powered content generation with multiple provider support.
+
+.. note::
+   **Current Version:** |version| | **Release:** |release|
+   
+   📋 View the `changelog <https://github.com/thsetz/Bewerbung/blob/main/CHANGELOG.md>`_ for recent updates and improvements.
 
 System Workflow
 ---------------

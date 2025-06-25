@@ -1,0 +1,99 @@
+{% extends "furo/base.html" %}
+
+{# Custom layout template to add version information to all pages #}
+
+{% block htmltitle %}
+  {{ super() }}
+  {# Add version to page title metadata #}
+  <meta name="version" content="{{ version }}" />
+  <meta name="release" content="{{ release }}" />
+{% endblock %}
+
+{% block header %}
+  {{ super() }}
+  {# Add version badge in header #}
+  <div class="version-banner" style="
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-align: center;
+    padding: 8px 0;
+    font-size: 0.9em;
+    font-weight: 500;
+    border-bottom: 1px solid #e1e4e8;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  ">
+    📚 {{ project }} Documentation - Version {{ version }}
+    <span style="margin-left: 20px; font-size: 0.85em; opacity: 0.9;">
+      📖 <a href="{{ pathto('index') }}" style="color: white; text-decoration: none;">Home</a>
+      | 🔗 <a href="https://github.com/thsetz/Bewerbung" style="color: white; text-decoration: none;">GitHub</a>
+      | 📋 <a href="{{ pathto('CHANGELOG') if 'CHANGELOG' in env.found_docs else 'https://github.com/thsetz/Bewerbung/blob/main/CHANGELOG.md' }}" style="color: white; text-decoration: none;">Changelog</a>
+    </span>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  <div class="version-footer" style="
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 30px;
+    border-top: 1px solid #e1e4e8;
+    background-color: #f8f9fa;
+    font-size: 0.85em;
+    color: #6a737d;
+  ">
+    <div style="margin-bottom: 8px;">
+      🚀 Built with <strong>{{ project }} v{{ version }}</strong>
+      | Generated on {{ date if date else "build time" }}
+      | Powered by <a href="https://www.sphinx-doc.org/" style="color: #0366d6;">Sphinx</a>
+    </div>
+    <div style="font-size: 0.8em;">
+      📝 Documentation version matches package version {{ release }}
+      {% if env.config.html_last_updated_fmt %}
+      | Last updated: {{ last_updated if last_updated else "recently" }}
+      {% endif %}
+    </div>
+  </div>
+  {{ super() }}
+{% endblock %}
+
+{% block extrahead %}
+  {{ super() }}
+  <style>
+    /* Custom CSS for version display */
+    .version-banner a:hover {
+      text-decoration: underline !important;
+    }
+    
+    /* Add version badge to sidebar if present */
+    .sidebar-brand-text::after {
+      content: " v{{ version }}";
+      font-size: 0.7em;
+      opacity: 0.7;
+      font-weight: normal;
+    }
+    
+    /* Responsive design for version banner */
+    @media (max-width: 768px) {
+      .version-banner {
+        font-size: 0.8em !important;
+        padding: 6px 10px !important;
+      }
+      .version-banner span {
+        display: block;
+        margin-left: 0 !important;
+        margin-top: 4px;
+      }
+    }
+    
+    /* Print styles */
+    @media print {
+      .version-banner {
+        position: static !important;
+        box-shadow: none !important;
+      }
+    }
+  </style>
+{% endblock %}

@@ -1,6 +1,12 @@
 # Content Variants Analysis
 
+> **{{ project }} v{{ version }}** - Content Variants Analysis Documentation
+
 The Bewerbung generator includes a powerful content variants analyzer that compares AI-generated content across different client/model combinations.
+
+:::{note}
+**Version:** {{ version }} | **Documentation for:** {{ project }}
+:::
 
 ## Overview
 

@@ -1,6 +1,12 @@
 # AI Content Generator
 
+> **{{ project }} v{{ version }}** - AI Content Generator Documentation
+
 Das AI Content Generator System erstellt intelligente, personalisierte Inhalte für deutsche Bewerbungen basierend auf Stellenbeschreibungen und Bewerberprofilen.
+
+:::{note}
+**Version:** {{ version }} | **Documentation for:** {{ project }}
+:::
 
 ## Hauptkomponenten
 
