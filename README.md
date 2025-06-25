@@ -34,7 +34,7 @@ A complete application (Bewerbung) consists of:
 
 The application generation follows a structured 7-step process:
 
-📊 **[🔗 View Interactive System Workflow Diagram →](docs/diagrams/system-workflow.html)**
+📊 **[🔗 View Interactive System Workflow Diagram →](https://thsetz.github.io/Bewerbung/_static/system-workflow.html)**
 
 ### Detailed Steps
 
@@ -51,13 +51,13 @@ The application generation follows a structured 7-step process:
 
 ## 🤖 AI Provider Support
 
-📊 **[🔗 View AI Provider Selection Diagram →](docs/diagrams/ai-provider-selection.html)**
+📊 **[🔗 View AI Provider Selection Diagram →](https://thsetz.github.io/Bewerbung/_static/ai-provider-selection.html)**
 
 ## 🏗️ Directory-Only Output Structure
 
 The generator uses a **clean directory-only structure** for organized output:
 
-📊 **[🔗 View Directory Structure Diagram →](docs/diagrams/directory-structure.html)**
+📊 **[🔗 View Directory Structure Diagram →](https://thsetz.github.io/Bewerbung/_static/directory-structure.html)**
 
 **Key Features:**
 - **No Root Files**: All documents are contained within AI provider subdirectories
