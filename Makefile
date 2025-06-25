@@ -1,6 +1,6 @@
 # Makefile for Bewerbung Generator
 
-.PHONY: test_1 test_2 test_3 test_4 test test_memory test-coverage coverage-report coverage-xml coverage-clean install clean venv generate variants variants-detailed docs docs-pdf docs-clean docs-serve docs-check docs-all clear-cache generate-fresh generate-cached cache-status
+.PHONY: test_1 test_2 test_3 test_4 test test_memory test-coverage coverage-report coverage-xml coverage-clean install clean venv generate variants variants-detailed docs docs-pdf docs-clean docs-serve docs-check docs-all clear-cache generate-fresh generate-cached cache-status test-documentation-generator test-version-management release-major release-minor release-patch test-make-release
 
 # Create virtual environment if it doesn't exist
 venv:
@@ -71,6 +71,67 @@ test-performance: venv
 		. .venv/bin/activate && python -m pytest tests/ -v -m "performance"; \
 	else \
 		python -m pytest tests/ -v -m "performance"; \
+	fi
+
+# Test content variants analyzer
+test-variants: venv
+	@echo "🔍 Running content variants analyzer tests..."
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		. .venv/bin/activate && python -m pytest tests/test_content_variants_analyzer.py -v; \
+	else \
+		python -m pytest tests/test_content_variants_analyzer.py -v; \
+	fi
+
+# Test documentation generator
+test-documentation-generator: venv
+	@echo "📚 Running documentation generator tests..."
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		. .venv/bin/activate && python -m pytest tests/test_documentation_generator.py -v; \
+	else \
+		python -m pytest tests/test_documentation_generator.py -v; \
+	fi
+
+# Test version management strategy
+test-version-management: venv
+	@echo "🏷️  Running version management tests..."
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		. .venv/bin/activate && python -m pytest tests/test_version_management.py -v; \
+	else \
+		python -m pytest tests/test_version_management.py -v; \
+	fi
+
+# Release management targets
+release-major: venv
+	@echo "🚀 Creating major release (X.0.0)..."
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		. .venv/bin/activate && python src/make_release.py major; \
+	else \
+		python src/make_release.py major; \
+	fi
+
+release-minor: venv
+	@echo "🚀 Creating minor release (x.X.0)..."
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		. .venv/bin/activate && python src/make_release.py minor; \
+	else \
+		python src/make_release.py minor; \
+	fi
+
+release-patch: venv
+	@echo "🚀 Creating patch release (x.x.X)..."
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		. .venv/bin/activate && python src/make_release.py patch; \
+	else \
+		python src/make_release.py patch; \
+	fi
+
+# Test release management script
+test-make-release: venv
+	@echo "🚀 Running release management tests..."
+	@if [ -z "$$VIRTUAL_ENV" ]; then \
+		. .venv/bin/activate && python -m pytest tests/test_make_release.py -v; \
+	else \
+		python -m pytest tests/test_make_release.py -v; \
 	fi
 
 # Run tests with coverage collection (excluding performance tests)
