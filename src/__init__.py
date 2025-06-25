@@ -23,7 +23,7 @@ Main Components:
 """
 
 # Version information
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "Bewerbung Generator Project"
 __description__ = "German Job Application Generation System with AI Support"
 
