@@ -11,9 +11,8 @@ from ai_content_generator import AIContentRequest, AIContentResponse
 class BaseAIClient(ABC):
     """Abstract base class for AI content generation clients"""
     
-    def __init__(self, base_dir: str = ".", use_cache: bool = True):
+    def __init__(self, base_dir: str = "."):
         self.base_dir = base_dir
-        self.use_cache = use_cache
         self.available = False
         
     @abstractmethod
@@ -65,8 +64,7 @@ class BaseAIClient(ABC):
             'provider': self.get_provider_name(),
             'model': self.get_model_name(),
             'folder': self.get_client_model_folder(),
-            'available': self.is_available(),
-            'cache_enabled': self.use_cache
+            'available': self.is_available()
         }
     
     def test_content_generation(self) -> bool:

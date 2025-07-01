@@ -32,7 +32,7 @@ class BewerbungGenerator:
         
         # Create formatters
         file_formatter = logging.Formatter(
-            '%(asctime)s | %(levelname)-8s | %(message)s',
+            '%(asctime)s | %(filename)-8s.%(funcName)-8s:%(lineno)d | %(levelname)-8s | %(message)s',
             datefmt='%Y-%m-%d %H:%M:%S'
         )
         
@@ -61,42 +61,6 @@ class BewerbungGenerator:
         self.logger = logger
         return logger
     
-    def clear_ai_content_cache(self, force: bool = True) -> bool:
-        """
-        Step 0: Clear AI content cache to ensure fresh content generation
-        
-        Args:
-            force: If True, always clear cache. If False, respect CLEAR_CACHE_ON_START env var
-            
-        Returns:
-            bool: True if cache was cleared, False if skipped
-        """
-        # Check environment variable for cache clearing preference
-        clear_cache = os.getenv('CLEAR_CACHE_ON_START', 'true').lower() == 'true'
-        
-        if not force and not clear_cache:
-            print("ℹ️ Cache clearing disabled via CLEAR_CACHE_ON_START=false")
-            return False
-        
-        cache_file = self.base_dir / ".cache" / "ai_content_cache.json"
-        
-        if cache_file.exists():
-            try:
-                cache_file.unlink()
-                print("🗑️ AI content cache cleared - ensuring fresh content generation")
-                if self.logger:
-                    self.logger.info("AI content cache cleared for fresh generation")
-                return True
-            except Exception as e:
-                print(f"⚠️ Warning: Could not clear cache file: {e}")
-                if self.logger:
-                    self.logger.warning(f"Failed to clear cache: {e}")
-                return False
-        else:
-            print("ℹ️ No existing AI content cache found")
-            if self.logger:
-                self.logger.info("No existing AI content cache to clear")
-            return False
     
     def get_newest_file_by_date_pattern(self, directory: Path, pattern: str = r"(\d{8})_.*") -> Optional[Path]:
         """
@@ -180,7 +144,7 @@ class BewerbungGenerator:
         print(f"Created output directory: {output_path}")
         return output_path
     
-    def generate_application_documents(self, output_dir: Path, profile_file: Path, job_file: Path, use_cache: bool = True) -> Dict[str, Path]:
+    def generate_application_documents(self, output_dir: Path, profile_file: Path, job_file: Path) -> Dict[str, Path]:
         """
         Step 4: Generate application documents (cover letter, CV, attachments) with AI content
         
@@ -188,7 +152,6 @@ class BewerbungGenerator:
             output_dir: Directory for generated documents
             profile_file: Path to profile file
             job_file: Path to job description file  
-            use_cache: Whether to enable AI content caching (default: True)
         """
         # Import AI classes locally to avoid import issues
         try:
@@ -212,17 +175,22 @@ class BewerbungGenerator:
         
         # Get AI clients based on generation mode
         if generate_all_providers:
-            ai_clients = ai_factory.get_all_available_clients(use_cache=use_cache)
+            ai_clients = ai_factory.get_all_available_clients()
             print(f"🔄 Multi-provider generation enabled: {len(ai_clients)} providers")
         else:
-            ai_client = ai_factory.create_client(use_cache=use_cache)
+            ai_client = ai_factory.create_client()
             ai_clients = [ai_client]
             print(f"📁 Single-provider generation: {ai_client.get_client_model_folder()}")
         
         # Read input content once for all providers
         job_content = job_file.read_text(encoding='utf-8')
-        profile_content = f"Profile: {profile_file.name}"  # Placeholder for actual profile content
-        
+        # profile_content = f"Profile: {profile_file.name}"  # Placeholder for actual profile content
+
+        with open(os.path.join(profile_file.parent, profile_file.stem + ".txt"), 'r', encoding='utf-8') as pf:
+            profile_content = pf.read()
+            print(f"📄 Used Profile: {profile_content[:50]}"   )
+
+
         # Initialize generated files collection
         generated_files = {}
         
@@ -609,12 +577,6 @@ def main():
     import argparse
     
     parser = argparse.ArgumentParser(description='Generate German job applications with AI support')
-    parser.add_argument('--clear-cache', action='store_true', 
-                       help='Force clear AI content cache before generation')
-    parser.add_argument('--no-cache', action='store_true',
-                       help='Disable AI content cache completely')
-    parser.add_argument('--keep-cache', action='store_true',
-                       help='Preserve existing AI content cache')
     
     args = parser.parse_args()
     
@@ -624,17 +586,6 @@ def main():
     generator = BewerbungGenerator()
     
     try:
-        # Step 0: Clear AI content cache for fresh generation
-        print("=== Step 0: Clearing AI Content Cache ===")
-        
-        if args.keep_cache:
-            print("🔒 Preserving existing AI content cache (--keep-cache)")
-        elif args.clear_cache:
-            print("🗑️ Force clearing AI content cache (--clear-cache)")
-            generator.clear_ai_content_cache(force=True)
-        else:
-            # Default behavior: clear cache unless disabled
-            generator.clear_ai_content_cache(force=False)
         
         # Step 1: Read newest profile
         profile_file = generator.read_newest_profile()
@@ -652,10 +603,8 @@ def main():
         output_dir = generator.create_output_directory(profile_file, job_file)
         
         # Step 4: Generate application documents with AI content
-        use_cache = not args.no_cache  # Disable cache if --no-cache flag is set
-        cache_status = "with caching disabled" if args.no_cache else "with fresh content (cache cleared)"
-        print(f"=== Step 4: Generating application documents {cache_status} ===")
-        markdown_files = generator.generate_application_documents(output_dir, profile_file, job_file, use_cache=use_cache)
+        print(f"=== Step 4: Generating application documents ===")
+        markdown_files = generator.generate_application_documents(output_dir, profile_file, job_file)
         
         if not markdown_files:
             print("❌ Error: Failed to generate application documents")

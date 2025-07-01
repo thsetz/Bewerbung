@@ -136,11 +136,11 @@ Test job description content"""
                 
                 try:
                     result = generator.generate_application_documents(
-                        output_dir, profile_file, job_file, use_cache=False
+                        output_dir, profile_file, job_file
                     )
                     
                     # Should call get_all_available_clients for multi-provider mode
-                    mock_factory_instance.get_all_available_clients.assert_called_once_with(use_cache=False)
+                    mock_factory_instance.get_all_available_clients.assert_called_once()
                     
                 except Exception as e:
                     # Expected due to missing dependencies in test environment

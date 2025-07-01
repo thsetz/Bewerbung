@@ -23,7 +23,7 @@ class AIClientFactory:
         self.preferred_provider = os.getenv("AI_PROVIDER", "auto").lower()
         self.enable_fallback = os.getenv("AI_ENABLE_FALLBACK", "true").lower() == "true"
         
-    def create_client(self, use_cache: bool = True) -> BaseAIClient:
+    def create_client(self) -> BaseAIClient:
         """
         Create an AI client based on configuration and availability
         
@@ -35,39 +35,39 @@ class AIClientFactory:
         """
         
         if self.preferred_provider == "claude":
-            return self._try_claude_client(use_cache) or self._get_fallback_client(use_cache)
+            return self._try_claude_client() or self._get_fallback_client()
         elif self.preferred_provider == "llama":
-            return self._try_llama_client(use_cache) or self._get_fallback_client(use_cache)
+            return self._try_llama_client() or self._get_fallback_client()
         elif self.preferred_provider == "auto":
-            return self._get_auto_client(use_cache)
+            return self._get_auto_client()
         else:
             print(f"⚠️  Unknown AI provider '{self.preferred_provider}', using auto selection")
-            return self._get_auto_client(use_cache)
+            return self._get_auto_client()
     
-    def _get_auto_client(self, use_cache: bool) -> BaseAIClient:
+    def _get_auto_client(self) -> BaseAIClient:
         """Auto-select the best available client"""
         
         # Try Llama first (local, free)
-        client = self._try_llama_client(use_cache)
+        client = self._try_llama_client()
         if client and client.is_available():
             print(f"🦙 Using Llama client ({client.model_name})")
             return client
         
         # Fall back to Claude (cloud, paid)
-        client = self._try_claude_client(use_cache)
+        client = self._try_claude_client()
         if client and client.is_available():
             print(f"🤖 Using Claude client")
             return client
         
         # Final fallback to sample content
         print("⚠️  No AI providers available, using sample content")
-        return self._get_fallback_client(use_cache)
+        return self._get_fallback_client()
     
-    def _try_llama_client(self, use_cache: bool) -> Optional[BaseAIClient]:
+    def _try_llama_client(self) -> Optional[BaseAIClient]:
         """Try to create a Llama client"""
         try:
             from llama_api_client import LlamaAPIClient
-            client = LlamaAPIClient(self.base_dir, use_cache)
+            client = LlamaAPIClient(self.base_dir)
             return client if client.is_available() else None
         except ImportError as e:
             print(f"⚠️  Llama client not available: {e}")
@@ -76,11 +76,11 @@ class AIClientFactory:
             print(f"⚠️  Error initializing Llama client: {e}")
             return None
     
-    def _try_claude_client(self, use_cache: bool) -> Optional[BaseAIClient]:
+    def _try_claude_client(self) -> Optional[BaseAIClient]:
         """Try to create a Claude client"""
         try:
             from claude_api_client import ClaudeAPIClient
-            client = ClaudeAPIClient(self.base_dir, use_cache)
+            client = ClaudeAPIClient(self.base_dir)
             return client if client.is_available() else None
         except ImportError as e:
             print(f"⚠️  Claude client not available: {e}")
@@ -89,18 +89,18 @@ class AIClientFactory:
             print(f"⚠️  Error initializing Claude client: {e}")
             return None
     
-    def _get_fallback_client(self, use_cache: bool) -> BaseAIClient:
+    def _get_fallback_client(self) -> BaseAIClient:
         """Get fallback client that always works (sample content)"""
-        return SampleAIClient(self.base_dir, use_cache)
+        return SampleAIClient(self.base_dir)
     
     def get_available_providers(self) -> List[str]:
         """Get list of available AI providers"""
         providers = []
         
-        if self._try_llama_client(False):
+        if self._try_llama_client():
             providers.append("llama")
         
-        if self._try_claude_client(False):
+        if self._try_claude_client():
             providers.append("claude")
         
         providers.append("sample")  # Always available
@@ -112,7 +112,7 @@ class AIClientFactory:
         results = {}
         
         # Test Llama
-        llama_client = self._try_llama_client(False)
+        llama_client = self._try_llama_client()
         if llama_client:
             results["llama"] = {
                 "available": llama_client.is_available(),
@@ -122,7 +122,7 @@ class AIClientFactory:
             results["llama"] = {"available": False, "test_passed": False}
         
         # Test Claude
-        claude_client = self._try_claude_client(False)
+        claude_client = self._try_claude_client()
         if claude_client:
             results["claude"] = {
                 "available": claude_client.is_available(),
@@ -132,7 +132,7 @@ class AIClientFactory:
             results["claude"] = {"available": False, "test_passed": False}
         
         # Sample is always available
-        sample_client = self._get_fallback_client(False)
+        sample_client = self._get_fallback_client()
         results["sample"] = {
             "available": True,
             "test_passed": sample_client.test_content_generation()
@@ -140,7 +140,7 @@ class AIClientFactory:
         
         return results
     
-    def get_all_available_clients(self, use_cache: bool = True) -> List[BaseAIClient]:
+    def get_all_available_clients(self) -> List[BaseAIClient]:
         """
         Get all available AI clients instead of just the first working one
         
@@ -151,7 +151,7 @@ class AIClientFactory:
         
         # Try Llama client with graceful failure handling
         try:
-            llama_client = self._try_llama_client(use_cache)
+            llama_client = self._try_llama_client()
             if llama_client and llama_client.is_available():
                 clients.append(llama_client)
                 print(f"🦙 Llama client available ({llama_client.get_model_name()})")
@@ -160,7 +160,7 @@ class AIClientFactory:
         
         # Try Claude client with graceful failure handling
         try:
-            claude_client = self._try_claude_client(use_cache)
+            claude_client = self._try_claude_client()
             if claude_client and claude_client.is_available():
                 clients.append(claude_client)
                 print(f"🤖 Claude client available ({claude_client.get_model_name()})")
@@ -168,7 +168,7 @@ class AIClientFactory:
             print(f"⚠️  Failed to initialize Claude client: {e}")
         
         # Always include sample client as fallback
-        sample_client = self._get_fallback_client(use_cache)
+        sample_client = self._get_fallback_client()
         clients.append(sample_client)
         print(f"📝 Sample client available (fallback)")
         
@@ -178,8 +178,8 @@ class AIClientFactory:
 class SampleAIClient(BaseAIClient):
     """Fallback AI client that provides sample content"""
     
-    def __init__(self, base_dir: str = ".", use_cache: bool = True):
-        super().__init__(base_dir, use_cache)
+    def __init__(self, base_dir: str = "."):
+        super().__init__(base_dir)
         self.available = True  # Always available
     
     def is_available(self) -> bool:

@@ -15,7 +15,7 @@ from base_ai_client import BaseAIClient, AIProviderError, AIContentError
 # AI Content Generator imports
 from ai_content_generator import (
     AIContentRequest, AIContentResponse, ContentType, 
-    AIContentPrompts, ContentCache, generate_sample_ai_content
+    AIContentPrompts, generate_sample_ai_content
 )
 
 # Anthropic API client with error handling
@@ -31,8 +31,8 @@ except ImportError:
 class ClaudeAPIClient(BaseAIClient):
     """Client for generating content using Claude API"""
     
-    def __init__(self, base_dir: str = ".", use_cache: bool = True):
-        super().__init__(base_dir, use_cache)
+    def __init__(self, base_dir: str = "."):
+        super().__init__(base_dir)
         self.base_dir = Path(base_dir)
         
         # Load environment variables (try local first, then default)
@@ -70,13 +70,6 @@ class ClaudeAPIClient(BaseAIClient):
                 print(f"❌ Failed to initialize Claude API client: {e}")
                 print("   Check if your API key is valid and has sufficient credits")
         
-        # Initialize cache
-        self.use_cache = use_cache
-        if use_cache:
-            cache_dir = self.base_dir / ".cache"
-            self.cache = ContentCache(cache_dir)
-        else:
-            self.cache = None
         
         # API configuration
         self.model = "claude-3-5-sonnet-20241022"
@@ -112,12 +105,6 @@ class ClaudeAPIClient(BaseAIClient):
         """
         start_time = time.time()
         
-        # Check cache first
-        if self.cache:
-            cached_response = self.cache.get(request)
-            if cached_response:
-                print(f"Using cached content for {request.content_type.value}")
-                return cached_response
         
         # Generate content
         if not self.available:
@@ -163,9 +150,6 @@ class ClaudeAPIClient(BaseAIClient):
                 }
             )
             
-            # Cache the response
-            if self.cache:
-                self.cache.set(request, ai_response)
             
             print(f"Generated {request.content_type.value} content ({ai_response.tokens_used} tokens)")
             return ai_response
@@ -418,31 +402,12 @@ Antworte nur mit der Positionsbezeichnung, ohne weitere Erklärungen.
     
     def get_usage_stats(self) -> Dict[str, Any]:
         """
-        Get usage statistics from cache
+        Get usage statistics
         """
-        if not self.cache:
-            return {'cache_enabled': False}
-        
-        stats = {
-            'cache_enabled': True,
-            'cached_items': len(self.cache._cache),
-            'api_available': self.available
+        return {
+            'api_available': self.available,
+            'model': self.model
         }
-        
-        if self.cache._cache:
-            total_tokens = sum(
-                item.get('tokens_used', 0) 
-                for item in self.cache._cache.values()
-            )
-            stats['total_tokens_cached'] = total_tokens
-        
-        return stats
-    
-    def clear_cache(self):
-        """Clear the content cache"""
-        if self.cache:
-            self.cache.clear()
-            print("Content cache cleared")
     
     def test_content_generation(self) -> bool:
         """

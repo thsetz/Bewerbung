@@ -17,25 +17,27 @@ from base_ai_client import BaseAIClient, AIProviderError, AIContentError
 # AI Content Generator imports
 from ai_content_generator import (
     AIContentRequest, AIContentResponse, ContentType, 
-    ContentCache, generate_sample_ai_content
+    generate_sample_ai_content
 )
 
 
 class LlamaAPIClient(BaseAIClient):
     """Client for generating content using Ollama (local Llama models)"""
     
-    def __init__(self, base_dir: str = ".", use_cache: bool = True):
-        super().__init__(base_dir, use_cache)
+    def __init__(self, base_dir: str = "."):
+        super().__init__(base_dir)
         self.base_dir = Path(base_dir)
         
         # Load environment variables (try local first, then default)
         local_env = self.base_dir / ".env.local"
         default_env = self.base_dir / ".env"
         
+        if default_env.exists(): 
+            load_dotenv(default_env)
+            print(f"Loaded default environment from {default_env}")
         if local_env.exists():
             load_dotenv(local_env)
-        else:
-            load_dotenv(default_env)
+            print(f"Loaded local environment from {local_env}")
         
         # Ollama configuration
         self.ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
@@ -43,12 +45,6 @@ class LlamaAPIClient(BaseAIClient):
         self.temperature = float(os.getenv("LLAMA_TEMPERATURE", "0.3"))
         self.max_tokens = int(os.getenv("LLAMA_MAX_TOKENS", "1000"))
         
-        # Initialize cache
-        if use_cache:
-            cache_dir = self.base_dir / ".cache"
-            self.cache = ContentCache(cache_dir)
-        else:
-            self.cache = None
         
         # Check availability
         self._check_ollama_availability()
@@ -98,12 +94,6 @@ class LlamaAPIClient(BaseAIClient):
         """Generate AI content using Ollama"""
         start_time = time.time()
         
-        # Check cache first
-        if self.cache:
-            cached_response = self.cache.get(request)
-            if cached_response:
-                print(f"Using cached content for {request.content_type.value}")
-                return cached_response
         
         # Generate content
         if not self.available:
@@ -117,7 +107,8 @@ class LlamaAPIClient(BaseAIClient):
                 job_description=request.job_description,
                 profile_content=request.profile_content,
                 company_name=request.company_name,
-                position_title=request.position_title
+                position_title=request.position_title,
+                additional_context =request.additional_context
             )
             
             # Call Ollama API
@@ -152,9 +143,6 @@ class LlamaAPIClient(BaseAIClient):
                     }
                 )
                 
-                # Cache the response
-                if self.cache:
-                    self.cache.set(request, ai_response)
                 
                 print(f"Generated {request.content_type.value} content with Ollama ({ai_response.tokens_used} tokens)")
                 return ai_response
@@ -169,10 +157,22 @@ class LlamaAPIClient(BaseAIClient):
         """Get Llama-optimized prompt for specific content type"""
         
         # Llama instruction format: <|begin_of_text|><|start_header_id|>system<|end_header_id|>...
+        additional_context = kwargs.get('additional_context', 'ARSCH')
+        text_so_far=additional_context["text_so_far"]
         system_prompt = """Du bist ein erfahrener Bewerbungsberater für den deutschen Arbeitsmarkt. 
-Schreibe professionelle, authentische Bewerbungstexte in deutscher Sprache. 
-Verwende einen überzeugenden aber nicht übertriebenen Stil."""
+Schreibe einen professionellen, authentischen Bewerbungstext in deutscher Sprache. 
+Verwende einen überzeugenden aber nicht übertriebenen Stil. Erweitere den aktuellen Text
+gemäß den Anforderungen.
+
+AKTUELLER TEXT:
+{text_so_far}
+
+"""
         
+        print("BLUMEKOHL PROMPT"*50 )
+        print(text_so_far) 
+        print("BLUMEKOHL PROMPT"*50 )
+
         prompts = {
             ContentType.EINSTIEGSTEXT: f"""
 <|begin_of_text|><|start_header_id|>system<|end_header_id|>
@@ -233,6 +233,9 @@ Schreibe einen authentischen Motivationstext.
 STELLENAUSSCHREIBUNG:
 {kwargs.get('job_description', '')}
 
+BEWERBER-PROFIL:
+{kwargs.get('profile_content', '')}
+
 UNTERNEHMEN: {kwargs.get('company_name', '')}
 POSITION: {kwargs.get('position_title', '')}
 
@@ -251,7 +254,7 @@ Antworte nur mit dem Text, ohne Erklärungen.
 {system_prompt}
 <|end_header_id|><|start_header_id|>user<|end_header_id|>
 
-Schreibe einen Text über den Mehrwert des Bewerbers für das Unternehmen.
+Schreibe einen Text über den Mehrwert des Bewerbers für das Unternehmen bei dem er sich bewirbt.
 
 STELLENAUSSCHREIBUNG:
 {kwargs.get('job_description', '')}
@@ -322,16 +325,23 @@ Antworte nur mit dem Text, ohne Erklärungen.
         ]
         
         results = {}
+        additional_context = {}
+        additional_context["text_so_far"] = ""
         for content_type in content_types:
+            print(f"Generating content for {content_type.value}...")
+            print(f"Profile content is {profile_content[:50]}...")  # Print first 50 chars for brevity
             request = AIContentRequest(
                 content_type=content_type,
                 job_description=job_description,
                 profile_content=profile_content,
                 company_name=company_name,
-                position_title=position_title
+                position_title=position_title,
+                additional_context=additional_context 
             )
             
             response = self.generate_content(request)
+            additional_context["text_so_far"] += response.generated_text + "\n"
+            print(f"Generated content for {content_type.value}  \n\n {response.generated_text}")
             results[content_type.value] = response.generated_text
         
         return results

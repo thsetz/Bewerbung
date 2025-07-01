@@ -32,17 +32,16 @@ A complete application (Bewerbung) consists of:
 
 ## 🔄 Generation Workflow
 
-The application generation follows a structured 7-step process:
+The application generation follows a structured 6-step process:
 
 📊 **[🔗 View Interactive System Workflow Diagram →](https://thsetz.github.io/Bewerbung/_static/system-workflow.html)**
 
 ### Detailed Steps
 
-0. **🗑️ AI Cache Clearing** - Clears existing AI content cache (`.cache/ai_content_cache.json`) to ensure fresh content generation
 1. **📁 Profile Reading** - Discovers and reads the newest profile file (pattern: `YYYYMMDD.*`) from `profil/` directory
 2. **📄 Job Description Reading** - Reads the newest job description (pattern: `YYYYMMDD.*`) from `Stellenbeschreibung/` directory  
 3. **📂 Output Directory Creation** - Creates structured output directory: `Ausgabe/{job_date}_{job_name}-{profile_date}_{profile_name}/`
-4. **🤖 AI Content Generation** - Generates personalized content using AI provider chain (Llama → Claude → Sample fallback) with fresh, non-cached content
+4. **🤖 AI Content Generation** - Generates personalized content using AI provider chain (Llama → Claude → Sample fallback)
 5. **📁 PDF Directory Setup** - Creates `/pdf` subdirectory for converted documents
 6. **📄 PDF Conversion** - Converts all markdown documents to professional PDF format
 
@@ -96,39 +95,6 @@ make setup-ollama
 export ANTHROPIC_API_KEY="your-api-key"
 ```
 
-## 🗑️ Cache Management
-
-The system automatically clears AI content cache before each generation to ensure fresh content. You can control this behavior:
-
-### Automatic Cache Clearing (Default)
-```bash
-# Normal generation - cache cleared automatically
-make generate
-
-# Explicitly generate with fresh content
-make generate-fresh
-```
-
-### Cache Control Options
-```bash
-# Generate while preserving existing cache
-make generate-cached
-
-# Manually clear cache only
-make clear-cache
-
-# Check cache status and statistics
-make cache-status
-
-# Disable automatic cache clearing via environment variable
-export CLEAR_CACHE_ON_START=false
-make generate
-```
-
-### Cache File Location
-- **Cache file**: `.cache/ai_content_cache.json`
-- **Content**: Stores AI-generated text sections by content type
-- **Behavior**: Automatically cleared on each generation for fresh content
 
 ## 📖 Documentation
 

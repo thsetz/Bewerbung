@@ -3,10 +3,8 @@
 AI Content Generator - Generates intelligent, personalized content for job applications
 """
 
-from pathlib import Path
 from typing import Dict, Any, Optional, List
-import json
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from enum import Enum
 
 
@@ -257,62 +255,6 @@ Stil: Höflich, professionell, einladend.
         """Get the system prompt for AI model"""
         return cls.SYSTEM_PROMPT
 
-
-class ContentCache:
-    """Simple cache for generated AI content"""
-    
-    def __init__(self, cache_dir: Path):
-        self.cache_dir = cache_dir
-        self.cache_dir.mkdir(exist_ok=True)
-        self.cache_file = self.cache_dir / "ai_content_cache.json"
-        self._cache = self._load_cache()
-    
-    def _load_cache(self) -> Dict[str, Any]:
-        """Load cache from file"""
-        if self.cache_file.exists():
-            try:
-                return json.loads(self.cache_file.read_text(encoding='utf-8'))
-            except (json.JSONDecodeError, FileNotFoundError):
-                return {}
-        return {}
-    
-    def _save_cache(self):
-        """Save cache to file"""
-        self.cache_file.write_text(
-            json.dumps(self._cache, indent=2, ensure_ascii=False), 
-            encoding='utf-8'
-        )
-    
-    def _generate_key(self, request: AIContentRequest) -> str:
-        """Generate cache key from request"""
-        import hashlib
-        key_data = f"{request.content_type.value}:{request.job_description[:100]}:{request.profile_content[:100]}"
-        return hashlib.md5(key_data.encode()).hexdigest()
-    
-    def get(self, request: AIContentRequest) -> Optional[AIContentResponse]:
-        """Get cached response"""
-        key = self._generate_key(request)
-        cached_data = self._cache.get(key)
-        if cached_data:
-            # Convert string back to enum
-            if isinstance(cached_data.get('content_type'), str):
-                cached_data['content_type'] = ContentType(cached_data['content_type'])
-            return AIContentResponse(**cached_data)
-        return None
-    
-    def set(self, request: AIContentRequest, response: AIContentResponse):
-        """Cache response"""
-        key = self._generate_key(request)
-        # Convert response to dict and handle enum serialization
-        response_dict = asdict(response)
-        response_dict['content_type'] = response.content_type.value  # Convert enum to string
-        self._cache[key] = response_dict
-        self._save_cache()
-    
-    def clear(self):
-        """Clear all cached content"""
-        self._cache.clear()
-        self._save_cache()
 
 
 def generate_sample_ai_content() -> Dict[str, str]:
