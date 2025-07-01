@@ -195,3 +195,13 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# Claude Code assistant files
+.claude/
+
+# Temporary development files
+packages.dot
+profil/*.txt
+
+# Generated application output (keep only sample structure)
+Ausgabe/*/
