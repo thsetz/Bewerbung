@@ -99,10 +99,10 @@ export ANTHROPIC_API_KEY="your-api-key"
 ## 📖 Documentation
 
 ### User Documentation
-- **[📚 Full Documentation](docs/_build/html/index.html)** - Complete user guide and API reference
-- **[🚀 Quick Start Guide](docs/user_guide/quickstart.rst)** - Get started in minutes  
-- **[⚙️ Configuration](docs/user_guide/configuration.rst)** - Customize your setup
-- **[🏗️ Architecture](docs/development/architecture.rst)** - System design and components
+- **[📚 Full Documentation](https://thsetz.github.io/Bewerbung/index.html)** - Complete user guide and API reference
+- **[🚀 Quick Start Guide](https://thsetz.github.io/Bewerbung/user_guide/quickstart.html)** - Get started in minutes  
+- **[⚙️ Configuration](https://thsetz.github.io/Bewerbung/user_guide/configuration.html)** - Customize your setup
+- **[🏗️ Architecture](https://thsetz.github.io/Bewerbung/development/architecture.html)** - System design and components
 
 ### Project Requirements
 - **[📋 Project Requirements](project_requirements/project_requirements.md)** - Complete formal requirements specification
